@@ -1,0 +1,22 @@
+{
+  "name": "public",
+  "authors": [
+    "hiroki-Yim <imhk_@naver.com>"
+  ],
+  "description": "",
+  "main": "index.blade.php",
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.3.1",
+    "summernote": "^0.8.10",
+    "dropzone": "^5.5.0"
+  }
+}

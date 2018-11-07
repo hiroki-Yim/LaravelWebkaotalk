@@ -1,0 +1,144 @@
+/*
+1.유형 선택자 = 요소이름{} = 요소가 있는 곳 모두 적용
+2.* = 문서 전체에 적용
+3.ID 선택자 = 구체적 id를 지닌 요소 = #id{}
+4.클래스 선택자 = class로 지정된 요소들 지정 = .class{}
+5.자식 선택자 = 둘 이상의 선택자로 구성되며 >(꺽새)로 구분함 = body > P = 자식만 적용됨 그 밑에 있는 자손 P태그는 적용안됨.
+6.자손 선택자 = 요소 내부에 있는 모든 자손 요소들에게 적용됨 = body P (스페이스로 구분)
+7.인접 형제 선택자 = E1 + E2 = E1과 E2가 문서 구조에서 같은 부모를 가지고 E1 바로 뒤에 E2가 와야함
+	ex) input:checked + label>.gender{}
+*/
+
+/*
+의사 클래스 선택자
+:link = 방문 전 링크
+:visited = 방문 후 링크
+:active = 클릭할 때 링크 상태
+:first-child = 요소의 첫 번째 자식을 호출함
+:focus = 요소가 focus될 때 {}구문 실행
+:hover = 요소에 마우스를 올렸을 때
+:lang = 문서의 언어에
+ */
+
+ /*
+선택자를 묶는 방법
+1.space(공백)으로 분리 = ul li{} = 부모 요소 안에있는 모든 자손 요소를 대상으로 style적용
+2.>로 분리 = body > P{}
+3.+로 분리 h1+h2{} ,단 부모가 같아야 하고 형제 요소 바로 뒤에 오는 요소에 적용됨
+ */
+
+/*custom font*/
+/* 웹폰트 적용  */
+@import url(https://fonts.googleapis.com/css?family=Montserrat);
+
+
+/*basic reset
+이 기능은 셀렉터 외부(여백)또는 테두리와 내용물(패딩)사이에 공간이 없도록 설정함
+*/
+* {margin: 0; padding: 0;} /* 모든 요소에 margin 0px padding 0px로 지정*/
+
+html {
+	font-family: 'NanumSquareRound',sans-serif;
+	height: 100%;
+	/*Image only BG fallback*/
+
+	/*background = gradient + image pattern combo*/
+	background:
+		linear-gradient(rgba(196, 102, 0, 0.6), rgba(155, 89, 182, 0.6));
+		/*background: linear-gradient(direction, color-stop1, color-stop2, ...);
+		선형 그라데이션 default값은 top to bottom*/
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+body {
+	font-family: montserrat, arial, verdana; /*1번 없으면 2번, 2번 없으면, 3번*/
+
+}
+
+/*form styles*/
+#msform {
+	width: 400px;
+	margin: 50px auto;
+	text-align: center;	/* msform 내부 text 중앙정렬 */
+	position: relative;
+}
+
+#msform fieldset {	/*id 이름 (공백) 태그이름 = 자손 선택자 = 부모 밑에 있는 자손들 모두 영향을 줌*/
+	background: white;
+	border: 0 none;
+	border-radius: 3px;	/* 박스 모서리 깎기 */
+	box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4); /* fieldset박스 자체에 그림자 효과를 줌  */
+	padding: 10px 30px;
+	box-sizing: border-box;/* 박스 크기 지정 */
+	width: 80%;	/* 전체 박스 안에서의 크기  */
+	margin: 0 10%;
+
+	/*fieldset을 다른 것들 위에 쌓기위해 사용*/
+	position: relative;
+}
+
+/*inputs*/
+#msform input, #msform textarea { /* msform안에있는 input 태그와 입력칸 CSS */
+	padding: 15px;
+	border: 1px solid #ccc; /* textarea 겉에 border효과 준거   */
+	border-radius: 3px;
+	margin-bottom: 10px; /* 다음 컴포넌트 까지 10px만큼 떨어트림  */
+	width: 100%;
+	box-sizing: border-box;
+	font-family: montserrat;
+	color: #2C3E50;
+	font-size: 13px;	/* textbox 안에 있는 font의 사이즈 */
+}
+.gender{
+	display: inline-block;
+	width: 100px;
+	background: white;/*   */
+	border: 1px solid #ccc;
+	border-radius: 1px;
+	cursor: pointer;
+	padding: 10px 5px;
+	margin: 10px 5px;
+}
+
+input:checked + label>.gender{	/*input 태그가 check되면 label의 바로밑에 있는 자식인 gender_btns에게 효과 적용됨 */
+	border: 1.5px solid green;	/* gender_btns가 클릭 됐을 때 효과*/
+	color: green;
+}
+/* 추후 javascrip에서 display none 구현 해야함*/
+.hidden_btns{
+	display: none; /* radio 속성 때문에 생겼던 O모양을 숨김 */
+}
+
+/*buttons*/
+#msform .action-button {
+	width: 200px;
+	background: #27AE60;
+	font-weight: bold;
+	color: white;
+	border: 0 none;
+	border-radius: 1px;
+	cursor: pointer;	/* click box 커서를 포인터 모양으로 잡음  */
+	padding: 10px 5px;
+	margin: 10px 5px;
+}
+#msform .action-button:hover, #msform .action-button:focus{	/* msform태그 내부에 있는 class : action-button이 hover or focus 되면 아래 구문 실행 */
+	box-shadow: 0 0 0 2px white, 0 0 0 3px #27AE60; /* submit button 위에 마우스 갖다 댔을 때 효과  */
+}
+/*headings*/
+.fs-title {
+	font-size: 15px;
+	text-transform: uppercase;	/* Create your account 부분 모두 대문자로 지정  없어도 됨.*/
+	color: #2C3E50;
+	margin-bottom: 10px;
+}
+.fs-subtitle {
+	font-weight: normal;
+	font-size: 13px;
+	color: #666;
+	margin-bottom: 20px;
+}
