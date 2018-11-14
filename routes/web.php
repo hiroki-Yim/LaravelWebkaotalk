@@ -13,28 +13,21 @@
 
 Route::get('/', 'mainController@main');  // root : app->Http->Controller->mainController.php    //controller's name @ method's name
 
-Route::get('/board', 'viewController@boardView');
+// Route::get('/board', 'viewController@boardView');
+// Route::get('chats', 'boardController@chats');
+// Route::get('write', 'boardController@write');    //get = 정보요청                                                 //crud = POST요청
+// Route::post('wirte', 'boardController@update');
+// Route::post('delete', 'boardController@delete');
+//Route::get('/home', 'HomeController@index')->name('home');
+//Route::resource('board', 'boardController', except예외처리 할 메서드);    //resource하면 board.index,create,destroy,update등등 자동연결
 
-Route::get('board', 'boardController@index');
+Auth::routes(); // Auth관련 기능 연결
 
-Route::get('view', 'boardController@view');
+Route::resource('board', 'boardController');
+Route::resource('chats', 'chatController');
+Route::get('find', 'boardController@find');
+Route::get('more', function(){return view('more.more');});
 
-Route::get('chats', 'boardController@chats');
-
-Route::get('write', 'boardController@write');    //get = 정보요청
-                                                 //crud = POST요청
-Route::post('wirte', 'boardController@update');
-
-Route::post('delete', 'boardController@delete');
-
-// Route::resource('user', 'UserController');
-
-Auth::routes(); //
-
-Route::get('/home', 'HomeController@index')->name('home');
-
-Route::get('/welcome', function(){
-    return view('welcome');
-});
-
-Route::get('/registerForm', 'userController@registerForm'); 
+Route::get('loginForKakao', 'kakaoLoginController@index');
+Route::get('auth/loginForKakao', 'kakaoLoginController@redirectToProvider');
+Route::get('/auth/kakaologincallback', 'kakaoLoginController@handleProviderCallback');

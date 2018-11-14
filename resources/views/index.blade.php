@@ -1,4 +1,4 @@
-@extends('kakaoView.main')
+@extends('layouts.master')
 
 @section('title')
     Friends!
@@ -6,14 +6,15 @@
 
 @section('head')
     @include('Components.head')
+    <script src="{{asset('js/modal.js')}}"></script>
 @endsection
 
 @section('header-top')
     @include('Components.header-top')
 @endsection 
 
-@section('loginmodal')
-    @include('Components.loginmodal')
+@section('login')
+    @include('auth.login')
 @endsection
 
 @section('mainContent') <!-- 메인 컨텐츠  -->
@@ -49,16 +50,17 @@
       <!-- <i class="fa fa-search"></i> -->
       <input type="text" placeholder="Find friends, chats, Plus Friends">
     </div>
-    @if(\Auth::user())
     <section class="friends__section">
       <header class="friends__section-header">
         <h6 class="friends__section-title">My Profile</h6>
       </header>
       <div class="friends__section-rows">
         <div class="friends__section-row">
-            <img src="{{asset('img/person-icon.png')}}" alt="">
+            <img src="{{Auth::user()['profileImg']}}" alt="">
             <a href="profile.php" class="fiends__section-name">
-                    {{ Auth::user()['name'] }}
+                    @if (Auth::check()){{ Auth::user()['nickname'] }}
+                    @else Guest
+                    @endif
             </a>
         </div>
         {{-- <div class="friends__section-row">
@@ -67,7 +69,6 @@
         </div> --}}
       </div>
     </section>
-    @endif
     <section class="friends__section">
       <header class="friends__section-header">
         <h6 class="friends__section-title">Friends</h6>
@@ -87,6 +88,6 @@
   </main>
 @endsection
 
-@section('footer')
-    @include('Components.footer')
+@section('nav-bottom')
+    @include('Components.nav-bottom')
 @endsection

@@ -39,5 +39,10 @@ return [
             'tolerance' => env('STRIPE_WEBHOOK_TOLERANCE', 300),
         ],
     ],
+    'kakao' => [
+        'client_id' => env('KAKAO_KEY') ,
+        'client_secret' => env('KAKAO_SECRET') ,
+        'redirect' => env('KAKAO_REDIRECT_URL') ,
+    ],
 
 ];

@@ -17,11 +17,12 @@ class CreateUsersTable extends Migration
             $table->increments('id')->comment('users PK');
             $table->string('email')->uniuqe()->comment('users account & email');
             $table->string('password')->comment('users password');
-            $table->string('name')->comment('users name');
+            $table->string('nickname')->nullable()->comment('users nickname');
+            $table->string('profileImg')->nullable()->comment('users profile');
             $table->string('phone')->nullable()->comment('users phone number');
-            $table->string('addr')->nullable()->comment('users address');
+            // $table->string('addr')->nullable()->comment('users address');
             $table->integer('point')->default(0)->comment('users point');
-            $table->boolean('gender')->comment('users gender');
+            $table->boolean('gender')->nullable()->comment('users gender');
             $table->rememberToken();    //세션이 오래 유지됨
             $table->timestamps();
         });
