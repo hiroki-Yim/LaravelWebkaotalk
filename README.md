@@ -1,2 +1,8 @@
-# LaravelWebkaotalk
-myFirstFrameWork
+# Laravel Webkaotalk
+
+## 概要
+*Laravelで開発した初めてのプロジェクト*
+- Laravelの環境を使ってプロントエンドを開発しました。
+- ブラウザでカカオトークをするように作りました。
+- COCを遵守しながら具現しました。
+- カカオトークAPIを使ってログインや自分の情報を利用して開発しました。
