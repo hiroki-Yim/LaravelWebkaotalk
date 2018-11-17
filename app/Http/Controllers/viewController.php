@@ -10,7 +10,4 @@ class viewController extends Controller
         
     }
 
-    public function boardView(){
-        return view('kakaoview/board');
-    }
 }

@@ -29,15 +29,23 @@ class kakaoLoginController extends Controller
         $nickname = $kaUser->getNickName();
         $profileImg = $kaUser->getAvatar();
 
-        if(!User::all()->where('email', $id)->first()){
-            $user = new User();
-            $user->email = $id;
-            $user->nickname = $nickname; 
-            $user->password = Hash::make($password);
-            $user->profileImg = $profileImg;
-            $user->save();
-        }else{
-            User::where('email', $id)
+        if(!User::all()->where('email', $id)->first()){ //DB에 있는 email과 카카오톡에서 가져온 id가 없다면 생성
+
+            // $user = new User();                              
+                user::create([   //가져온 값으로 회원가입 시킴
+            // $user->email = $id;                              
+                    'email' => $id,
+            // $user->nickname = $nickname;                     
+                    'nickname' => $nickname,
+            // $user->password = Hash::make($password);         
+                    'password' => Hash::make($password),
+            // $user->profileImg = $profileImg;                 
+                    'profileImg' =>$profileImg,
+            // $user->save();                                   
+                    ]);
+
+        }else{  //있다면 비밀번호를 업데이트 해줌
+            User::where('email', "$id") //비교할 때 숫자랑 문자가 다를수도 있으니
                 ->update(['password' => Hash::make($password)]);
 
         }
@@ -45,12 +53,6 @@ class kakaoLoginController extends Controller
         // if (user::all()->where('email', $id)->first()){ // 방금 받은 토큰으로 저장
         //     user::where('email', $id)->update(['password'=>$token]);   //이메일이 kaid인 값의 비번을 업데이트
         // }else{
-        //     user::create([   //가져온 값으로 회원가입 시킴
-        //         'nickname' => $nickname,
-        //         'email' => $id,
-        //         'password' => Hash::make($token),
-        //         'profileImg' =>$profileImg,
-        //     ]);
         // }
 
         //회원가입 후 자동 로그인 

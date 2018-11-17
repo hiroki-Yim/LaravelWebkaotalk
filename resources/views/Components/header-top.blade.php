@@ -5,7 +5,7 @@
         <i class="fa fa-wifi"></i>
       </div>
       <div class="header__column">
-        <span class="header__time"><?= date("H:i"); ?></span>
+        <span class="header__time">{{date("H:i a")}}</span>
       </div>
       <div class="header__column">
         <i class="far fa-moon"></i>

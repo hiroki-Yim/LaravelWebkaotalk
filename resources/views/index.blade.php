@@ -56,11 +56,18 @@
       </header>
       <div class="friends__section-rows">
         <div class="friends__section-row">
+          @if(Auth::check() && Auth::user()['profileImg'])
             <img src="{{Auth::user()['profileImg']}}" alt="">
             <a href="profile.php" class="fiends__section-name">
-                    @if (Auth::check()){{ Auth::user()['nickname'] }}
-                    @else Guest
-                    @endif
+            {{ Auth::user()['nickname'] }}
+          @elseif(!Auth::user()['profileImg'])
+            <img src="{{asset('img/person-icon.png')}}" alt="">
+            <a href="profile.php" class="fiends__section-name">
+          @else
+            <img src="{{asset('img/person-icon.png')}}" alt="">
+            <a href="profile.php" class="fiends__section-name">
+            guest
+          @endif
             </a>
         </div>
         {{-- <div class="friends__section-row">

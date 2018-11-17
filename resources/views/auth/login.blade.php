@@ -10,10 +10,8 @@
         <img src="{{asset('img/avatar.png')}}" alt="Avatar" class="avatar">
       </div>    
       <div class="container wrapper">
-        <b>이메일</b>
-        <input type="text" placeholder="Email" name="email" required>
-        <b>비밀번호</b>
-        <input type="password" placeholder="Password" name="password" required>
+        <b>이메일</b><input type="text" placeholder="Email" name="email" required>
+        <b>비밀번호</b><input type="password" placeholder="Password" name="password" required>
         <button type="submit" class="button">로그인</button>
         <a id="kakao-login-btn"></a>
         <a class="pwd cancelbtn" href="{{route('register')}}" style="text-align: center">아직 회원이 아니세요?</a>

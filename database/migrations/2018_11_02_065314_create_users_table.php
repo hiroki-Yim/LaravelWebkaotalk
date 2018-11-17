@@ -17,7 +17,7 @@ class CreateUsersTable extends Migration
             $table->increments('id')->comment('users PK');
             $table->string('email')->uniuqe()->comment('users account & email');
             $table->string('password')->comment('users password');
-            $table->string('nickname')->nullable()->comment('users nickname');
+            $table->string('nickname')->comment('users nickname');
             $table->string('profileImg')->nullable()->comment('users profile');
             $table->string('phone')->nullable()->comment('users phone number');
             // $table->string('addr')->nullable()->comment('users address');

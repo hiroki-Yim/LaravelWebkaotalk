@@ -1,46 +1,13 @@
-<?php 
+@extends('layouts.master')
 
-// require_once('../../Model/boardDao.php');
-// require_once('../../config/config.php');
-// require_once('../../config/tools.php');
-// session_start();
-// $sid = session_exist('id');
-// $dao = new boardDao();                                                                                 
-// $currentPage = requestValue("page"); 
-// $totalCount = $dao->getNumMsgs();
-/*클래스 위에 use App\Board; */
-/*=> Board::orderBy('created_at', 'desc')->paginate(5);*/
-
-//   if($totalCount > 0){
-//   $totalPages = ceil($totalCount/NUM_LINES);                            
-//   if($currentPage < 1){ $currentPage = 1; }
-//   if($currentPage > $totalPages){ $currentPage = $totalPages; }
-
-//   $start = ($currentPage - 1) * NUM_LINES;
-//   $msgs = $dao->getManyMsgs($start, NUM_LINES);                        
-
-//   $startPage = floor(($currentPage-1)/NUM_PAGE_LINKS)*NUM_PAGE_LINKS+1;
-//   $endPage = $startPage + NUM_PAGE_LINKS - 1;                          
-
-//   if($endPage > $totalPages){ $endPage = $totalPages; }                 
-//   if($startPage == 1){ $prev = true; }                                  
-//   if($endPage > $totalPages){ $next = true; }                          
-
-//   $startRecord = floor(($currentPage-1)/NUM_LINES);
-
-// }
-// else{}
-
-?>
-  @extends('layouts.master')
   @section('title')
     board
   @endsection
 
   @section('head')
-  @include('components.head')
-    <link rel="stylesheet" href="../../public/css/write_modify.css">
-    <link rel="stylesheet" href="../../../bower_components/bootstrap-material-design/css/mdb.min.css">
+    @include('components.head')
+    <link rel="stylesheet" href="{{asset('css/write_modify.css')}}">
+    <link rel="stylesheet" href="{{asset('bower_components/bootstrap-material-design/css/mdb.min.css')}}">
   @endsection
   
   @section('header-top')
@@ -77,15 +44,20 @@
       <li class="chats__chat">
       <a href="{{url('user')}}/{{ $row['postid'] }}">
           <div class="chat__content">
-            <img src="images/person-icon.png">
+          @if($row->profileImg)
+            <img src="{{$row['profileImg']}}">
+          @else
+            <img src="{{asset('img/person-icon.png')}}">
+          @endif
             <div class="chat__preview">
               <h3 class="chat__user">{{ $row['title']}}</h3>
             <span class="chat__last-message">{{$row->author}}</span>
             </div>
           </div>
           <span class="chat__date-time">
-          <? //passing_time($row["Regtime"]); ?>
-          time<br>
+          
+            {{passing_time($row->created_at)}}
+          <br>
           <br>
           Hits : {{$row['viewCount']}}
           </span>
@@ -96,20 +68,19 @@
   @endforelse
 
   <div class="chat-btn">
-    <a class="fa fa-comment">
-    </a>
+  <i class="fa fa-comment"></i>
   </div>
+  </ul>
   <script>
   $('.chat-btn').click(function(){
     location.href="{{route('board.create')}}";
   });
   </script>
-  
-  <!-- </ul>
-  <div class="chat-btn" onclick="location.href='<? //bdUrl('write_Form.php',0, $currentPage) ?>'">
-    <i class="fa fa-comment"></i>
-  </div>
 
+
+
+  <!-- 
+  
 <ul class="pagination pg-dark wrapperboard">
   {{$msgs->links()}}
   {{-- @if($startPage > 1) --}}
