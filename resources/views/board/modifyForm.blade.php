@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
   @section('title')
-    writeForm
+    modifyForm
   @endsection
 
   @section('head')
@@ -29,7 +29,7 @@
     </div>
     
     <div class="header__column">
-        <span class="header__text">게시글 작성</span>
+        <span class="header__text">게시글 수정</span>
     </div>
 
     <div class="header__column">
@@ -43,15 +43,16 @@
   <main>
     <div class="wrapper" style="padding:15px">
       <fieldset>
-      <form action="{{route('board.store')}}" method="post" class="form" enctype="multipart/form-data">
+      <form action="{{route('board.update', ['board' => $msg['postid']])}}" method="post" class="form" enctype="multipart/form-data">
       @csrf
+      @method('PUT')
         <!-- id가 label값, name이 php REQUEST값, value가 진짜 값 -->
-        <input type="hidden" class="form-control" name="author" value="{{\auth::user()->nickname}}">
-        <input type="hidden" name = "profileImg" value="{{\auth::user()->profileImg}}">
+        <input type="hidden" class="form-control" name="author" value="{{$msg['author']}}">
+        <input type="hidden" name="profileImg" value="{{\auth::user()->profileImg}}">
         <!-- 작성자값을 보내긴 해야하는데 값이 보이면 안되니까 숨김 작성자의 기본 전달값을 작성자로 설정 -->
         <div class="form-group">
           <label for="title" class="wrapper"></label>
-          <input type="text" class="form-control" name="title" placeholder="TITLE" class="form-control{{ $errors->has('title') ? ' is-invalid' : '' }}">
+          <input type="text" value="{{$msg['title']}}" class="form-control" name="title" placeholder="TITLE" class="form-control{{ $errors->has('title') ? ' is-invalid' : '' }}">
           @if ($errors->has('title'))
           <span class="invalid-feedback" role="alert">  <!-- 유효성 검사 -->
             <strong>{{ $errors->first('title') }}</strong>
@@ -63,11 +64,12 @@
         </div>
 
         <div class="form-group">
-          <textarea class ="summernote" id="summernote" name="content" rows="8">
+          <textarea class ="summernote" id="summernote" name="content" rows="8" value="{{$msg['content']}}">
+            {{$msg['content']}}
           </textarea>
 
           <button type="submit" class="btn" id="startUpload" style="float:right;">작성하기</button>
-          <!-- <button type="button" class="btn btn-danger" onclick="locationView('board')">목록보기</button> -->
+          <button type="button" class="btn" style="float:right;" onclick="location.href='{{url('board')}}'">목록보기</button>
         </div>
       </form>
       </fieldset>

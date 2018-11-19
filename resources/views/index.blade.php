@@ -60,9 +60,10 @@
             <img src="{{Auth::user()['profileImg']}}" alt="">
             <a href="profile.php" class="fiends__section-name">
             {{ Auth::user()['nickname'] }}
-          @elseif(!Auth::user()['profileImg'])
+          @elseif(Auth::check() && !Auth::user()['profileImg'])
             <img src="{{asset('img/person-icon.png')}}" alt="">
             <a href="profile.php" class="fiends__section-name">
+            {{ Auth::user()['nickname'] }}
           @else
             <img src="{{asset('img/person-icon.png')}}" alt="">
             <a href="profile.php" class="fiends__section-name">

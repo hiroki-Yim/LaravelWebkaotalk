@@ -25,6 +25,7 @@ Auth::routes(); // Auth관련 기능 연결
 
 Route::resource('board', 'boardController');
 Route::resource('chats', 'chatController');
+
 Route::get('find', 'boardController@find');
 Route::get('more', function(){return view('more.more');});
 

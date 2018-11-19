@@ -15,6 +15,8 @@
     @yield('boardContent')
     @yield('findContent')
     @yield('moreContent')
+    
+    @yield('viewContent')
 
     @yield('writeForm')
 

@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('profileImg')->nullable()->comment('users profile');
             $table->string('phone')->nullable()->comment('users phone number');
             // $table->string('addr')->nullable()->comment('users address');
-            $table->integer('point')->default(0)->comment('users point');
+            $table->unsignedInteger('point')->default(0)->comment('users point');
             $table->boolean('gender')->nullable()->comment('users gender');
             $table->rememberToken();    //세션이 오래 유지됨
             $table->timestamps();

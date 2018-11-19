@@ -10,6 +10,6 @@
       <div class="header__column">
         <i class="far fa-moon"></i>
         <i class="fab fa-bluetooth-b"></i>
-        <span class="header__battery">66% <i class="fa fa-battery-full"></i></span>
+        <span class="header__battery">100% <i class="fa fa-battery-full"></i></span>
       </div>
     </div>

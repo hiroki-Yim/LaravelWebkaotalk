@@ -15,7 +15,7 @@ class CreateFilesTable extends Migration
     {
         Schema::create('files', function (Blueprint $table) {
             $table->increments('id')->comment('파일 고유 번호');
-            $table->integer('postnum')->unsigned()->comment('게시글 번호');
+            $table->unsignedInteger('postnum')->comment('게시글 번호');
             $table->foreign('postnum')->references('postid')->on('boards')->onDelete('cascade');
             $table->string('filename')->comment('파일 고유 이름');
             $table->string('filesavename')->comment('파일 해시 이름');

@@ -42,7 +42,7 @@
   <ul class="chats__list">
   @forelse($msgs as $row)
       <li class="chats__chat">
-      <a href="{{url('user')}}/{{ $row['postid'] }}">
+      <a href="{{route('board.show' , ['postid'=>$row['postid']])}}">
           <div class="chat__content">
           @if($row->profileImg)
             <img src="{{$row['profileImg']}}">
@@ -59,7 +59,7 @@
             {{passing_time($row->created_at)}}
           <br>
           <br>
-          Hits : {{$row['viewCount']}}
+          Hits : {{ $viewCount }}
           </span>
         </a>
       </li>
