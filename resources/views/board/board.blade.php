@@ -8,6 +8,8 @@
     @include('components.head')
     <link rel="stylesheet" href="{{asset('css/write_modify.css')}}">
     <link rel="stylesheet" href="{{asset('bower_components/bootstrap-material-design/css/mdb.min.css')}}">
+    <script src="{{asset('bower_components/jscroll/dist/jquery.jscroll.min.js')}}"></script>
+    <script src="{{asset('bower_components/bootstrap-material-design/js/bootstrap.min.js')}}"></script>
   @endsection
   
   @section('header-top')
@@ -40,6 +42,7 @@
     
   </div>
   <ul class="chats__list">
+    <div class="infinite-scroll">
   @forelse($msgs as $row)
       <li class="chats__chat">
       <a href="{{route('board.show' , ['postid'=>$row['postid']])}}">
@@ -55,8 +58,7 @@
             </div>
           </div>
           <span class="chat__date-time">
-          
-            {{passing_time($row->created_at)}}
+          {{$row->created_at->diffForHumans()}}
           <br>
           <br>
           Hits : {{ $viewCount }}
@@ -64,13 +66,31 @@
         </a>
       </li>
   @empty
-  <p>there is no board</p>
   @endforelse
+  {{$msgs->links()}}
+</div>
 
   <div class="chat-btn">
   <i class="fa fa-comment"></i>
   </div>
   </ul>
+
+  
+  <script type="text/javascript">
+    $('ul.pagination').hide();
+    $(function() {
+        $('.infinite-scroll').jscroll({
+            autoTrigger: true,
+            loadingHtml: '<img class="center-block" style="margin:0 auto;" src="{{asset('img/loading.gif')}}" alt="Loading... " />', // MAKE SURE THAT YOU PUT THE CORRECT IMG PATH
+            padding: 0,
+            nextSelector: '.pagination li.active + li a',
+            contentSelector: 'div.infinite-scroll',
+            callback: function() {
+                $('ul.pagination').remove();
+            }
+        });
+    });
+</script>
   <script>
   $('.chat-btn').click(function(){
     location.href="{{route('board.create')}}";

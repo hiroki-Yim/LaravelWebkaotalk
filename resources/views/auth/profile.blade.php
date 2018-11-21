@@ -1,24 +1,17 @@
-<?php 
 
-session_start();
-require_once('../../config/config.php'); 
-require_once('../../config/tools.php');
-$sid = session_exist('id');
-$sname = session_exist('name');
-$smail = session_exist('mail');
+@extends('layouts.master')
 
-?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <?php require_once('./html/head.php'); ?>
-  <title>Profile</title>
-  <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-  <header class="top-header top-header--transparent">
-  <?php require_once('./html/header_top.php'); ?>
-    <div class="header__bottom">
+@section('title')
+  profile
+@endsection
+
+@section('head')
+  @include('components.head')
+@endsection
+
+@section('profile')
+ <header class="top-header top-header--transparent">
+   <div class="header__bottom">
       <div class="header__column">
         <a href="index.php">
           <i class="fa fa-times fa-lg"></i>
@@ -35,12 +28,12 @@ $smail = session_exist('mail');
   <main class="profile">
     <header class="profile__header">
       <div class="profile__header-container">
-        <img src="images/person-icon.png" alt="">
-        <h3 class="profile__header-title"><?=$sname?></h3>
+        <img src="{{$profile['profileImg']}}" alt="">
+        <h3 class="profile__header-title">{{$profile['nickname']}}</h3>
       </div>
     </header>
     <div class="profile__container">
-      <?=$smail ?>
+      {{$profile['email']}}
       <div class="profile__actions">
         <div class="profile__action">
           <span class="profile__action-circle">
@@ -57,6 +50,4 @@ $smail = session_exist('mail');
       </div>
     </div>
   </main>
-
-</body>
-</html>
+@endsection

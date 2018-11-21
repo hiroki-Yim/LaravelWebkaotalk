@@ -15,7 +15,7 @@ class boardController extends Controller
     public function index(){    //REQUEST에는 무엇이 넘어올까
          //비지니스 로직 다 만든 다음에 view로 호출
          
-        $board = Board::orderBy('boards.created_at', 'desc')->join('users','boards.author','=','users.nickname')->paginate(5);
+        $board = Board::orderBy('boards.created_at', 'desc')->join('users','boards.author','=','users.nickname')->paginate(7);
         $viewCount = 1;
         //Hit::where('postid', 'userid')->join('postid','boards.postid','=','hits.userid')->count();//조회수
         return view('board.board', ['msgs' => $board, 'viewCount'=>$viewCount]); // 이건 배열 형태로 쭉 받으면 됨, 연관배열,
@@ -25,15 +25,22 @@ class boardController extends Controller
     }
     public function show($board){
         //$this->hits($id);
-        
+        if(\Auth::check()){
         if(!Hit::where('postid',$board)->where('userid',\Auth::user()['email'])->exists()){
+            
             Hit::create(['postid' => $board, 'userid' => \Auth::user()['email']]);
         }
         $msg = Board::where('postid', $board)->first();  // 레코드 1나만 들고옴 first
         $comments = Comment::orderBy('postnum', 'desc');
         $viewCount = Hit::where('postid', $board)->count();//조회수 
         return view('board.views', ['msg' => $msg, 'comments'=>$comments, 'viewCount'=>$viewCount]);
+        }elseif(!\Auth::check()){
+        "<script>
+        alert('로그인 한 사용자만 글을 볼 수 있습니다.');
+        history.back();
+        </script>";  
     }
+}
     public function create(){   //create
         // 작성 폼으로 연결
         if(\Auth::check()){
@@ -44,6 +51,7 @@ class boardController extends Controller
             history.back();
             </script>";
         }
+        
     }
 
     public function store(updateBoardRequest $request){
@@ -101,5 +109,22 @@ class boardController extends Controller
 
     public function find(){
         return view('board.find');
+    }
+
+    public function uploadImg(){
+        $return_value = "";
+        if ($_FILES['image']['name']) {
+        if (!$_FILES['image']['error']) {
+        $ext = explode('.', $_FILES['image']['name']);  
+        $filename = time().'.'.$ext[1];
+        $destination = "{{asset('uploadedFile/Images/users')}}".$filename;
+        $location = $_FILES['image']['tmp_name'];
+        move_uploaded_file($location, $destination);
+        $return_value ="{{asset('uploadedFile/Images/users')}}".$filename;
+        }else{
+        $return_value ='업로드에 실패 하였습니다.: '.$_FILES['image']['error'];
+        }
+        }
+        return $return_value;
     }
 }

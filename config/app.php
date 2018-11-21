@@ -172,7 +172,9 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+
         \SocialiteProviders\Manager\ServiceProvider::class,
+        pouu69\KakaoApi\KakaoServiceProvider::class, //kakao
 
     ],
 
@@ -224,6 +226,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
+        'Kakao' => pouu69\KakaoApi\Facade\KakaoFacade::class,   //kakao Facade 등록 
     ],
 
 ];

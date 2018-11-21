@@ -20,6 +20,8 @@
 
     @yield('writeForm')
 
+    @yield('profile')
+
     @yield('login')
     @yield('registerFormContent')
     @yield('nav-bottom')

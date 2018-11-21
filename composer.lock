@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "644afce07e56757443ed2fb40194b6fa",
+    "content-hash": "5bfb6639121638ef828ed3de185a3955",
     "packages": [
         {
             "name": "caouecs/laravel-lang",
@@ -1381,6 +1381,43 @@
                 "random"
             ],
             "time": "2018-07-02T15:55:56+00:00"
+        },
+        {
+            "name": "pouu69/kakao-api",
+            "version": "1.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pouu69/KakaoApi.git",
+                "reference": "e247bf9278242facd99214b13c516b21532ba9e1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pouu69/KakaoApi/zipball/e247bf9278242facd99214b13c516b21532ba9e1",
+                "reference": "e247bf9278242facd99214b13c516b21532ba9e1",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^6.0",
+                "php": ">=5.5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "pouu69\\KakaoApi\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "KwanUng",
+                    "email": "pouu69@gmail.com"
+                }
+            ],
+            "description": "kakao api for laravel 5",
+            "time": "2016-11-23T04:32:41+00:00"
         },
         {
             "name": "psr/container",

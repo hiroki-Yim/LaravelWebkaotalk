@@ -29,13 +29,21 @@
   <main class="more">
     <header class="more__header">
       <div class="more-header__column">
+        @if(!Auth::user()['profileImg'])
         <img src="{{asset('img/person-icon.png')}}" alt="">
+        @else
+        <img src="{{auth::user()['profileImg']}}" alt="">
+        @endif
         <div class="more-header__info">
           <h3 class="more-header__title">
-            <?= "writer" ?>
+            @if(Auth::user()['nickname'])
+            {{Auth::user()['nickname']}}
+            @else
+            geust
+            @endif
           </h3>
           <span class="more-header__subtitle">
-          <?= "writer's mail" ?>
+          {{ Auth::user()['email'] }}
           </span>
         </div>
       </div>

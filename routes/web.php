@@ -29,6 +29,12 @@ Route::resource('chats', 'chatController');
 Route::get('find', 'boardController@find');
 Route::get('more', function(){return view('more.more');});
 
+Route::get('maps', function(){return view('more.maps');});
+Route::get('profile', 'viewController@profile');
+
+
+
+//kakao login
 Route::get('loginForKakao', 'kakaoLoginController@index');
 Route::get('auth/loginForKakao', 'kakaoLoginController@redirectToProvider');
 Route::get('/auth/kakaologincallback', 'kakaoLoginController@handleProviderCallback');

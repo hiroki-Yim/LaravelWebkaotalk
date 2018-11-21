@@ -18,7 +18,8 @@ class CreateCommentsTable extends Migration
             $table->integer('postnum')->unsigned()->comment('게시글 번호');
             $table->foreign('postnum')->references('postid')->on('boards')->onDelete('cascade');
             $table->string('writer')->comment('댓글 작성자');
-            $table->string('content')->comment('댓글 내용');
+            // $table->foreign('writer')->references('nickname')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->text('content')->comment('댓글 내용');  // string -> text
             $table->string('mnum')->nullable()->comment('부모 댓글 번호');
             $table->timestamps();
         });

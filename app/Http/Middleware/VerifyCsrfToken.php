@@ -19,6 +19,6 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-        //
+        // CSRF 토큰검사 하지 않을 blade 검사
     ];
 }

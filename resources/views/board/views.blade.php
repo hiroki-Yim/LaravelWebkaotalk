@@ -13,7 +13,7 @@ board.view
 @include('Components.header-top')
 <div class="header__bottom">
     <div class="header__column">
-    <a href="{{route('board.index')}}">
+        <a href="{{route('board.index')}}">
             <i class="fa fa-chevron-left fa-lg"></i>
         </a>
     </div>
@@ -66,7 +66,6 @@ board.view
             --}}
             @if($msg['author'] == Auth::user()['nickname'])
             <br>
-                
             <input type="button" class="btn btn-success" value="수정하기" onclick="location.href='{{$msg['postid']}}/edit'">
             <script>
                 function delReq(){ // 삭제할 경우 삭제를 확인을 받기 위해 deleteRequest함수를 만듦
@@ -80,13 +79,13 @@ board.view
                 @method('delete')
                 <input type="submit" class="btn btn-dangerous" value="삭제하기" onclick='delReq()'>
             </form>
-      
 
-            <input type="hidden" name="postid" value="{{$msg["postid"]}}">
-        {{-- <form action="{{route('board.destroy'),$msg["postid"]}}" method="post">
-            @csrf
-            <input type="button" class="delete" value="삭제하기">
-        </form> --}}
+
+            <input type="hidden" name="postid" value="{{$msg['postid']}}">
+            {{-- <form action="{{route('board.destroy'),$msg['postid']}}" method="post">
+                @csrf
+                <input type="button" class="delete" value="삭제하기">
+            </form> --}}
             <!-- <i class="fas fa-trash-alt"></i> -->
             @endif
         </span>
@@ -160,7 +159,7 @@ board.view
             <div class="type-message__input">
                 <input type="text" name="comments">
                 <i class="fa fa-smile-o fa-lg"></i>
-    
+
                 <button type="submit" class="comment_btn btn btn-primary">
                     <i class="fas fa-comment"></i>
                     <input type="hidden" name="postnum" value="">

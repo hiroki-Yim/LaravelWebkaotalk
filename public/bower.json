@@ -17,6 +17,7 @@
   "dependencies": {
     "jquery": "^3.3.1",
     "summernote": "^0.8.10",
-    "dropzone": "^5.5.0"
+    "dropzone": "^5.5.0",
+    "jscroll": "^2.4.1"
   }
 }

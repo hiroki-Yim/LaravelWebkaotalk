@@ -6,8 +6,8 @@
 
 @section('head')
   @include('components.head')
-  <link rel="stylesheet" href="../../public/css/write_modify.css">
-  <link rel="stylesheet" href="../../../bower_components/bootstrap-material-design/css/mdb.min.css">
+  <link rel="stylesheet" href="{{asset('css/write_modify.css')}}">
+  <link rel="stylesheet" href="{{asset('bower_components/bootstrap-material-design/css/mdb.min.css')}}">
 @endsection
 
   @section('header-top')

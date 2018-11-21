@@ -71,4 +71,5 @@ class RegisterController extends Controller
             'gender' => $data['gender'],
         ]);
     }
+
 }
