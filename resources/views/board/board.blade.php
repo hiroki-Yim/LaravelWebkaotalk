@@ -37,13 +37,14 @@
 
 <main class="chats">
   <div class="search-bar">
-    <i class="fa fa-search"></i>
+    <!-- <i class="fa fa-search"></i> -->
     <input type="text" placeholder="게시글을 검색해 보세요" id="search-bar">
     
   </div>
   <ul class="chats__list">
     <div class="infinite-scroll">
   @forelse($msgs as $row)
+  <input type="hidden" name="_token" value="{{ Session::token() }}">
       <li class="chats__chat">
       <a href="{{route('board.show' , ['postid'=>$row['postid']])}}">
           <div class="chat__content">
@@ -81,7 +82,7 @@
     $(function() {
         $('.infinite-scroll').jscroll({
             autoTrigger: true,
-            loadingHtml: '<img class="center-block" style="margin:0 auto;" src="{{asset('img/loading.gif')}}" alt="Loading... " />', // MAKE SURE THAT YOU PUT THE CORRECT IMG PATH
+            loadingHtml: '<img class="center-block" style="display:flex; justify-content:center; align-items:center;" src="{{asset('img/loading.gif')}}" alt="Loading... " />', // MAKE SURE THAT YOU PUT THE CORRECT IMG PATH
             padding: 0,
             nextSelector: '.pagination li.active + li a',
             contentSelector: 'div.infinite-scroll',
@@ -96,46 +97,81 @@
     location.href="{{route('board.create')}}";
   });
   </script>
+  <script>
+      var isLoading = false;
+    $('#search-bar').on("change keyup paste", onSearch);
 
+    function onSearch(e) {
+        var searchBoard = e.target.value;
+        if (searchBoard.length >= 2 && !isLoading) {
+            isLoading = true;
+            console.log(searchBoard);
 
+            $.ajax({
+                type: "POST",
+                url: '/postajax',
+                data: {
+                    message: searchBoard,
+                    _token: "{{Session::token()}}"
+                },
+                dataType: "JSON",
+                error: function (e) {
+                    //alert(e);
+                    console.log(e);
+                    throw new Error("ajax 통신 실패");
+                },
+                success: function (data) {
+                    // console.log(data[2].data);
+                    const dataList = JSON.parse(data[2].data);
+                    console.log(dataList);
+                    // console.log(dataList2);
+                    //console.log(data[0].length);
+                    makeTag(dataList);
+                }
+            });
+        } //end of if
 
-  <!-- 
-  
-<ul class="pagination pg-dark wrapperboard">
-  {{$msgs->links()}}
-  {{-- @if($startPage > 1) --}}
-  <li class="page-item">
-  <a class="page-link" href="<? //bdUrl("board.php", 0, $currentPage - NUM_PAGE_LINKS) ?>">
-  <span aria-hidden="true">&laquo;</span>
-    <span class="sr-only">previous</span>
-  </a>
-  </li>
-  {{-- @endif --}}
+    }
 
-      {{-- @for ($i = $startPage; $i <= $endPage; $i++) --}}
-      {{-- @if($i == $currentPage) --}}
-      <li class="page-item active">
-      <a class="page-link" href="<?php //bdUrl("board.php", 0, $i) ?>">
-          now<?php //$i ?>
-      </a>
-      </li>
-      {{-- @else --}}
-      <li class="page-item">
-      <a class="page-link" href="<? //bdUrl("board.php", 0, $i) ?>">
-        <? $i ?></a>&nbsp;
-      </li> 
-      {{-- @endif
-      @endfor --}}
+    function makeTag(data) {
+        var tag = "";
+        if (data[0].length === 0) {
+            isLoading = false;
+            // tag += '<p id = "resultNone"> 결과가 없습니다. </p>';
+            $('.chats__chat').html(tag);
+            return;
+        }
+        var items = data;
+        items = !items.length ? [items] : items;
+        for (var i = 0; i < items.length; i++) {
+            if (items[i]) {
+                tag += "<li class='chats__chat'>" +
+                    "<a href={{url('board')}}" + "/" + items[i].postid + ">" + // page=currentpage
+                    "<div class='chat__content'>" +
+                    "<img src=" + "'" + items[i].profileImg + "'" + ">" +
+                    "<div class='chat__preview'>" +
+                    "<h3 class='chat__user'>" + items[i].title + "</h3>" +
+                    "<span class='chat__last-message'>" + items[i].author + "</span>" +
+                    "</div>" +
+                    "</div>" +
+                    "<span class='chat__date-time'>" + items[i].created_at +
+                    "<br>" +
+                    "<br>" +
+                    'Hits : ' + //items[i].Hits +
+                    "</span>" +
+                    "</a>" +
+                    "</li>";
+            }
+        }
+        if (items.length == 0) {
+            tag += '<p id = "resultNone"> 결과가 없습니다. </p>';
+        }
+        $('.chats__list').html(tag);
 
-      {{-- @if($endPage < $totalPages) --}}
-      <li class="page-item ">
-      <a class="page-link" aria-label="Next" href="<? //bdUrl("board.php", 0, $currentPage + NUM_PAGE_LINKS) ?>">
-      <span aria-hidden="true">&raquo;</span>
-      <span class="sr-only">Next</span>
-      </a>
-      </li> 
-      </ul> -->
-      {{-- @endif --}}
+        isLoading = false;
+    }
+
+  </script>
 </main>
 @endsection
 

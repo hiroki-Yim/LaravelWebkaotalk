@@ -47,7 +47,8 @@ class kakaoLoginController extends Controller
         }else{  //있다면 비밀번호를 업데이트 해줌
             User::where('email', "$id") //비교할 때 숫자랑 문자가 다를수도 있으니
                 ->update(['password' => Hash::make($password)]);
-
+                $oldImg = User::where('email' , "$id")->value('profileImg');
+                User::where('profileImg', "$oldImg")->update(['profileImg'=>"$profileImg"]);
         }
 
         // if (user::all()->where('email', $id)->first()){ // 방금 받은 토큰으로 저장

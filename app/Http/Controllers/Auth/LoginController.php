@@ -17,7 +17,15 @@ class LoginController extends Controller
     | to conveniently provide its functionality to your applications.
     |
     */
+    public function store(){
+        //로그인 검증
+        return redirect()->intended('board'); // 로그인 하면 내가 요청했던 곳으로 감
+    }
 
+    public function destroy(){
+        auth()->logout();
+        return redirect('/')->with('message', 'ありがとうございました。');
+    }
     use AuthenticatesUsers;
 
     /**

@@ -12,6 +12,11 @@ use App\Http\Requests\updateBoardRequest; //검증된 정보(빈값x)를 받기�
 
 class boardController extends Controller
 {
+    public function __construct(){
+        //return $this->middleware('guest'); //guest이외의 사람에게는 이 컨트롤러를 사용하지 못하게 만든다는 뜻
+        //return $this->middleware('auth');//인증된 사용자만 이용할 수 있게 board 볼수있게 만듦 board들어가면 url(login)이 실행됨
+    }
+
     public function index(){    //REQUEST에는 무엇이 넘어올까
          //비지니스 로직 다 만든 다음에 view로 호출
          
@@ -34,11 +39,13 @@ class boardController extends Controller
         $comments = Comment::orderBy('postnum', 'desc');
         $viewCount = Hit::where('postid', $board)->count();//조회수 
         return view('board.views', ['msg' => $msg, 'comments'=>$comments, 'viewCount'=>$viewCount]);
-        }elseif(!\Auth::check()){
-        "<script>
+        }else{
+        echo "<script>
         alert('로그인 한 사용자만 글을 볼 수 있습니다.');
         history.back();
         </script>";  
+        
+        //return redirect('board')->with('message', "로그인을 해 주세요!　( ´∀｀ )");
     }
 }
     public function create(){   //create

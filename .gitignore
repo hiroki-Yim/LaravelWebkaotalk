@@ -15,6 +15,7 @@ resources/views/temp
 vendor/
 node_modules/
 npm-debug.log
+public/uploadedFile
 
 # Laravel 4 specific
 bootstrap/compiled.php

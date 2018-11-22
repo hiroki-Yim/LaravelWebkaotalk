@@ -32,7 +32,7 @@ Route::get('more', function(){return view('more.more');});
 Route::get('maps', function(){return view('more.maps');});
 Route::get('profile', 'viewController@profile');
 
-
+Route::post('/postajax', 'AjaxController@search');
 
 //kakao login
 Route::get('loginForKakao', 'kakaoLoginController@index');

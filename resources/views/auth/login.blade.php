@@ -23,7 +23,7 @@
         </div>
         </div>
 
-        <a class="btn btn-link" href="{{ route('password.request') }}">{{ __('Forgot Your Password?') }}</a>
+        <a class="btn btn-link" href="{{ route('password.request') }}">{{ __('비밀번호를 잊어버리셨나요?') }}</a>
     </div>
     </div>
     </form>
