@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Board;  //boardModel 씀
+use App\Board;  //정의한 Model(db)들 사용
 use App\User;
 use App\Comment;
 use App\hit;
+use Illuminate\Support\Facades\DB;
 use Log; // Log사용
 use App\Http\Requests\updateBoardRequest; //검증된 정보(빈값x)를 받기위해 정의해놓았고 그 class를 객체로 사용하기 위해 use 해줌.
 
@@ -17,16 +18,38 @@ class boardController extends Controller
         //return $this->middleware('auth');//인증된 사용자만 이용할 수 있게 board 볼수있게 만듦 board들어가면 url(login)이 실행됨
     }
 
-    public function index(){    //REQUEST에는 무엇이 넘어올까
-         //비지니스 로직 다 만든 다음에 view로 호출
+    public function index(){
+         //비지니스 로직 이후 view로 호출
          
-        $board = Board::orderBy('boards.created_at', 'desc')->join('users','boards.author','=','users.nickname')->paginate(7);
-        $viewCount = 1;
-        //Hit::where('postid', 'userid')->join('postid','boards.postid','=','hits.userid')->count();//조회수
-        return view('board.board', ['msgs' => $board, 'viewCount'=>$viewCount]); // 이건 배열 형태로 쭉 받으면 됨, 연관배열,
- 
+        $board = Board::select('users.email', 'users.nickname', 'users.profileImg',
+	    'boards.postid', 'boards.author', 'boards.title', 'boards.content', 'boards.created_at')->orderBy('boards.created_at', 'desc')->join('users','boards.author','=','users.nickname')->paginate(7);
+        
+        $viewCount = Hit::select('postid', DB::raw('count(*) hits'))->groupBy('postid')->orderBy('postid', 'desc');
+        
+        // $board = Board::select('users.email', 'users.nickname', 'users.profileImg',
+        // 'boards.postid', 'boards.author', 'boards.title', 'boards.content', 'boards.created_at','hits')->join('users','boards.author','=','users.nickname')
+        // ->joinsub($viewCount, 'hits', function($join){
+        // $join->on('boards.postid', '=', 'hits.postid');
+        // })->paginate(7);
+        //-> 문제점 조회된 게시글 밖에 보이지 않음
+        
+        $hits =  Board::select('hits')->join('users','boards.author','=','users.nickname')
+        ->joinsub($viewCount, 'hits', function($join){
+        $join->on('boards.postid', '=', 'hits.postid');
+        })->get();
+
+        //return response()->json($hits, 200, [], JSON_PRETTY_PRINT);
+        return view('board.board', ['msgs' => $board]); // 이건 배열 형태로 쭉 받으면 됨, 연관배열,
+        
+        // $hits = hit::select('pro_id', DB::raw('count(*) hits'))->groupBy('pro_id')->orderBy('hits', 'desc');
+
+        // $products = product::joinSub($hits, 'hits', function ($join){
+        //     $join->on('id', '=', 'hits.pro_id');
+        // })->paginate(9);
+        
+        //$board->toJson();
         // $totlaCount = Board::count();
-        //*** Log::11가지 현업에서는 LOG를 남기는것이 중요하다~ 이말이지
+        //*** Log::11가지 현업에서는 LOG를 남기는것이 중요하다~
     }
     public function show($board){
         //$this->hits($id);
@@ -40,7 +63,8 @@ class boardController extends Controller
         $viewCount = Hit::where('postid', $board)->count();//조회수 
         return view('board.views', ['msg' => $msg, 'comments'=>$comments, 'viewCount'=>$viewCount]);
         }else{
-        echo "<script>
+        echo 
+        "<script>
         alert('로그인 한 사용자만 글을 볼 수 있습니다.');
         history.back();
         </script>";  
@@ -73,7 +97,7 @@ class boardController extends Controller
             'author' => $author,
         ]);
 
-        return redirect('board')->with('message');
+        return redirect('board')->with('message', $title.'의 글이 저장되었습니다.');
     }
 
     public function edit(Request $request, $board){

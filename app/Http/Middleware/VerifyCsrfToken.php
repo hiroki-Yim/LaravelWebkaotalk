@@ -20,6 +20,6 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         // CSRF 토큰검사 하지 않을 blade 검사
-        'postajax'
+        // 'postajax'
     ];
 }

@@ -41,15 +41,21 @@ function locationView(url, param, opt, opt2) {
     }
 }
 
-function delReq(num, writer, page) { // 삭제할 경우 삭제를 확인을 받기 위해 deleteRequest함수를 만듦
+function delReq() { // 삭제할 경우 삭제를 확인을 받기 위해 deleteRequest함수를 만듦
     var yn = confirm("정말 삭제 하시겠습니까?");
-    if (yn == false) {
-        return;
+    if (yn == true) {
+        return true;
     } // 아니오를 눌렀을 시 아무 반응 하지않게 함
     else {
-        locationView('delete', num, writer, page);
-    } // 예를 눌렀을 때 delete.php에 글 값을 전달하여 삭제함
+        return false;
+    }
 }
+
+// function delReq(){ // 삭제할 경우 삭제를 확인을 받기 위해 deleteRequest함수를 만듦
+//     var yn = confirm("정말 삭제 하시겠습니까?");
+//     if (yn == true){ return true; } // 아니오를 눌렀을 시 아무 반응 하지않게 함
+//     else { return false; }
+// }
 
 function commentAjax() {
     $(".comment_btn").click(function () {
