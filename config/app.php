@@ -169,7 +169,7 @@ return [
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
+        App\Providers\BroadcastServiceProvider::class,  //pusher을 사용하기때문에 주석 제거 디폴트는 주석처리,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 

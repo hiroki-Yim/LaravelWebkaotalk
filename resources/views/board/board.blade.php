@@ -15,6 +15,10 @@
     @include('components.header-top')
 @endsection
  
+@section('login')
+    @include('auth.login')
+@endsection
+ 
 @section('boardContent')
 <div class="header__bottom">
     <div class="header__column">

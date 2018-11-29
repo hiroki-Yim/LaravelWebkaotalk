@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
@@ -70,6 +71,42 @@ class RegisterController extends Controller
             'phone' => $data['phone'],
             'gender' => $data['gender'],
         ]);
+    }
+    public function register(Request $request){
+        $this->validator($request->all())->validate();
+
+        $confirmCode = str_random(60);
+        $user = User::create([
+            'nickname' => $request->nickname,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'confirm_code' => $confirmCode,
+            'phone' => $request->phone,
+            'gender' => $request->gender,
+        ]);
+
+        // email 전송
+        \Mail::send('auth.registerEmail', compact('user') , function($message) use($user) {
+            $message->to($user->email);
+            $message->subject('[%s] 회원 가입을 확인한 뒤 이용하세요.');
+        });
+
+        //flash('가입하신 메일 계정으로 가입 확인 메일을 보냈습니다. 가입 확인을 한 다음 로그인해 주세요.');
+        return redirect('/')->with('message', '가입 확인 메일을 확인해 주세요.');
+    }
+
+    public function confirm($code) {
+        $user = User::where('confirm_code', $code)->first();
+        if(!$user) {
+            return redirect(route('register'))->with('message', 'URLが正しくありません。');
+        }
+        $user->activated = true;
+        $user->confirm_code = null;
+        $user->save();
+
+        \Auth::login($user);
+
+        return redirect('/')->with('message', $user->nickname.'様ようこそウェブカカオトークへ.');
     }
 
 }

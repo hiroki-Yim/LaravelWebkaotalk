@@ -33,7 +33,7 @@
     <ul class="chats__list">
       
         <li class="chats__chat">
-          <a href="chat.php">
+        <a href="{{url('chatting')}}">
             <div class="chat__content">
               <img src="{{asset('img/person-icon.png')}}">
               <div class="chat__preview">
@@ -47,7 +47,7 @@
           </a>
         </li>
         <li class="chats__chat">
-          <a href="chat.php">
+          <a href="{{url('chatting')}}">
             <div class="chat__content">
               <img src="{{asset('img/person-icon.png')}}">
               <div class="chat__preview">

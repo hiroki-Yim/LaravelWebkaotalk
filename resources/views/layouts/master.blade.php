@@ -9,9 +9,12 @@
     @yield('head')
 </head>
 
-<body>
-    @yield('header-top')
+<body>    
 
+    @yield('header-top')
+    @if(Session::has('message'))
+    <div class="alert alert-info">{{ Session::get('message') }}</div>
+    @endif
     @yield('mainContent') {{-- bodyContent --}}
     @yield('chatsContent')
     @yield('boardContent')

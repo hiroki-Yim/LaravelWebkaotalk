@@ -43,7 +43,7 @@
         <span class="profile__action-circle">
            <i class="far fa-circle"></i>
           </span>
-        <a href="../account/update_Form.php" class="profile__action-title">Edit Profile</a>
+        <a href="{{url('profileEdit')}}" class="profile__action-title">Edit Profile</a>
       </div>
     </div>
   </div>

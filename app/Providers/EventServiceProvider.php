@@ -21,6 +21,13 @@ class EventServiceProvider extends ServiceProvider
         \SocialiteProviders\Manager\SocialiteWasCalled::class => [
             'SocialiteProviders\\Kakao\\KakaoExtendSocialite@handle',
         ],
+        'Illuminate\Auth\Events\Verified' => [
+            'App\Listeners\LogVerifiedUser',
+        ],
+    ];
+
+    protected $subscribe = [
+        //\App\Listeners\UserEventListener::class,
     ];
 
     /**

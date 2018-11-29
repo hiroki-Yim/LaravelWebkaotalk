@@ -24,6 +24,8 @@ class CreateUsersTable extends Migration
             $table->unsignedInteger('point')->default(0)->comment('users point');
             $table->boolean('gender')->nullable()->comment('users gender');
             $table->rememberToken();    //세션이 오래 유지됨
+            $table->string('confirm_code', 60)->nullable();
+            $table->boolean('activated')->default(0);
             $table->timestamps();
         });
     }

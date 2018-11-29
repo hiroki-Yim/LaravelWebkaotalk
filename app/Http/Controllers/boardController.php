@@ -31,7 +31,7 @@ class boardController extends Controller
         // ->joinsub($viewCount, 'hits', function($join){
         // $join->on('boards.postid', '=', 'hits.postid');
         // })->paginate(7);
-        //-> 문제점 조회된 게시글 밖에 보이지 않음
+        //-> 문제점 조회된 게시글만 찾아서 갖고옴, 조회 안된 게시글들도 가져올 수 있어야 함
         
         $hits =  Board::select('hits')->join('users','boards.author','=','users.nickname')
         ->joinsub($viewCount, 'hits', function($join){

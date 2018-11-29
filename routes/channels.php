@@ -11,6 +11,8 @@
 |
 */
 
-Broadcast::channel('App.User.{id}', function ($user, $id) {
-    return (int) $user->id === (int) $id;
+// Broadcast::channel('App.User.{id}', function ($user, $id) {
+//     return (int) $user->id === (int) $id;
+    Broadcast::channel('chatting', function ($user) {
+        return Auth::check();   //사용자 인증 여부에 따라 true, false반환
 });

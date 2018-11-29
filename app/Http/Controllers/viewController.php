@@ -12,4 +12,15 @@ class viewController extends Controller
        return view('auth/profile', ['profile' => $profile]); 
     }
 
+    public function editProfile(){
+        $profile = \Auth::user();
+        return view('auth/profileEdit', [
+            'profile' => $profile
+        ]);
+    }
+    
+    public function updateProfile(){
+        //
+    }
+
 }
