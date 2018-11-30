@@ -42,5 +42,8 @@ Route::get('messages', 'chatsController@fetchMessages');//모든 채팅 메시�
 Route::post('messages', 'chatsController@sendMessage'); //새 메시지 보내기
 
 //send register mail
-//Route::get('auth/confirm/{code}')->where('code', '[\pL-\pN]{60}');  //URL충돌을 피하기 위해 URL패턴 적용
 Route::get('register/{code}', 'Auth\RegisterController@confirm')->name('register.confirm');
+
+//File&Img_upload
+Route::post('/imgUpload','fileController@imageUpload')->name('imgUpload');
+

@@ -13,7 +13,7 @@
 
     @yield('header-top')
     @if(Session::has('message'))
-    <div class="alert alert-info">{{ Session::get('message') }}</div>
+    <div class="alert alert-info" style="text-align: center;">{{ Session::get('message') }}</div>
     @endif
     @yield('mainContent') {{-- bodyContent --}}
     @yield('chatsContent')

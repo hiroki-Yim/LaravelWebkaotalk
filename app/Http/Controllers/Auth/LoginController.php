@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
-
+use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -51,10 +52,10 @@ class LoginController extends Controller
         if($user['activated'] == false){
             \Mail::send('auth.registerEmail', compact('user') , function($message) use($user) {
                 $message->to($user->email);
-                $message->subject('[%s] 회원 가입을 확인한 뒤 이용하세요.');
+                $message->subject('[Webkaotalk] 회원 가입을 확인한 뒤 이용하세요.');
             });
             return redirect('/')
-                ->with('message', '인증코드가 재발급 되었습니다 등록하신 이메일에서 확인해주세요.');
+                ->with('message', '인증코드가 재발급 되었습니다. 등록하신 이메일에서 확인해주세요.');
         }
         
         $credentials = $request->only('email', 'password');

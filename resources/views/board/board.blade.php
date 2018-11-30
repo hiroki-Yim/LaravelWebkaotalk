@@ -106,7 +106,7 @@ function onSearch(e) {
                 console.log(dataList);
                 console.log(data[3].count); 
                 makeTag(dataList);
-                $('#postedNum').html('<p>검색된 게시글 갯수: ' + data[3].count + '개</p>');
+                $('#postedNum').html('<p>검색된 게시글 갯수: ' + data[3].count + '건</p>');
             }
         });
     } //end of if

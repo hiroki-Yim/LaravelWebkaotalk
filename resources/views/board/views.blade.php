@@ -40,7 +40,7 @@
         <span class="chat__message-time">
             {{ $msg["created_at"]->diffForHumans() }} </span>
         <span class="chat__message-body">
-            {{$msg["content"]}}
+            {!!$msg["content"] !!}
             {{--
             @foreach($result as $files)
             @if($files['file_name'])

@@ -88,7 +88,7 @@ class RegisterController extends Controller
         // email 전송
         \Mail::send('auth.registerEmail', compact('user') , function($message) use($user) {
             $message->to($user->email);
-            $message->subject('[%s] 회원 가입을 확인한 뒤 이용하세요.');
+            $message->subject('[Webkaotalk] 회원 가입을 확인한 뒤 이용하세요.');
         });
 
         //flash('가입하신 메일 계정으로 가입 확인 메일을 보냈습니다. 가입 확인을 한 다음 로그인해 주세요.');
@@ -98,15 +98,15 @@ class RegisterController extends Controller
     public function confirm($code) {
         $user = User::where('confirm_code', $code)->first();
         if(!$user) {
-            return redirect(route('register'))->with('message', 'URLが正しくありません。');
+            return redirect('/')->with('message', 'URLが正しくありません。');
         }
         $user->activated = true;
-        $user->confirm_code = null;
+        $user->confirm_code = null; //확인코드 발급 후 메일에서 
         $user->save();
 
         \Auth::login($user);
 
-        return redirect('/')->with('message', $user->nickname.'様ようこそウェブカカオトークへ.');
+        return redirect('/')->with('message', $user->nickname.'様ようこそウェブカカオトークへ');
     }
 
 }
