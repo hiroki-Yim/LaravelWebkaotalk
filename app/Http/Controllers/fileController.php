@@ -13,22 +13,37 @@ use App\Board;
 class fileController extends Controller
 {
     public function imageUpload(Request $request){
-        $return_value = "";
-        if ($_FILES['image']['name']) {
-        if (!$_FILES['image']['error']) {
-        $ext = explode('.', $_FILES['image']['name']);  
-        $filename = time().'.'.$ext[1];
+        $url = "";
+        $image = $request->image;
+        if ($request->hasFile('image')) {
+            if ($image->isValid()) {
+                $savename = time().'.'.$image->guessExtension(); //getMimetype
+                $path = public_path()."/uploadedFile/Images/users";  //라라벨이 path를 지정 = public (/)
+                $image->move($path, $savename);
+                $url ="/uploadedFile/Images/users/".$savename;
+                return $url;
+            }else{
+                return response('에러가 발생하였습니다.', 406)->header('Content-Type', 'text/plain');
+            }
+        }else {
+            return response('파일이 없습니다.', 406)->header('Content-Type', 'text/plain');
+        }
+        // if ($_FILES['image']['name']) {
+        //     if (!$_FILES['image']['error']) {
+        //         $ext = explode('.', $_FILES['image']['name']);  
+        //         $filename = time().'.'.$ext[1];
 
-        $destination = public_path()."/uploadedFile/Images/users".$filename;  //라라벨이 path를 지정 = public (/)
-        \Log::error($destination);
-        $location = $_FILES['image']['tmp_name'];
-        move_uploaded_file($location, $destination);
-        $return_value ="/uploadedFile/Images/users".$filename;
-        }else{
-        $return_value ='업로드에 실패 하였습니다.: '.$_FILES['image']['error'];
-        }
-        }
-        return $return_value;
+        //         $destination = public_path()."/uploadedFile/Images/users".$filename;  //라라벨이 path를 지정 = public (/)
+        //         \Log::error($destination);
+        //         $location = $_FILES['image']['tmp_name'];
+        //         move_uploaded_file($location, $destination);
+        //         $url ="/uploadedFile/Images/users".$filename;
+        //     }else{
+        //         $url ='업로드에 실패 하였습니다.: '.$_FILES['image']['error'];
+        //     }
+        // }
+        return $url;
+        // return $request->file('image')->path();
     }    
 
     public function fileUpload(){

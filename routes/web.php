@@ -14,12 +14,17 @@
 Route::get('/', 'mainController@main');  // root : app->Http->Controller->mainController.php    //controller's name @ method's name
 
 //get = 정보요청, crud = POST요청
-//Route::resource('board', 'boardController', except예외처리 할 메서드);  //resource하면 board.index,create,destroy,update등등 자동연결 -resource
+//Route::resource('board', 'boardController', except예외처리 할 메서드); 자동연결 -resource
 
 Auth::routes(); // Auth관련 기능 연결
 
 Route::resource('board', 'boardController');
-Route::post('/postajax', 'AjaxController@search');
+Route::post('/postajax', 'AjaxController@search');  // ajax test
+
+//
+Route::get('loginAuth', function(){
+    return view('auth.login2');
+});
 
 Route::get('find', 'boardController@find');
 Route::get('more', function(){return view('more.more');});
@@ -46,4 +51,8 @@ Route::get('register/{code}', 'Auth\RegisterController@confirm')->name('register
 
 //File&Img_upload
 Route::post('/imgUpload','fileController@imageUpload')->name('imgUpload');
+Route::post('/fileUpload', 'fileController@fileUpload')->name('fileUpload');
+
+//친구관리
+Route::get('/friends', 'FriendController@index')->middleware('auth');
 

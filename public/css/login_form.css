@@ -1,10 +1,15 @@
-body {font-family: Arial, Helvetica, sans-serif;}
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
 * {
     margin: 0px;
     padding: 0px;
 }
+
 /* Full-width input fields */
-input[type=text], input[type=password] {
+input[type=text],
+input[type=password] {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -22,6 +27,9 @@ button {
     border: none;
     cursor: pointer;
     width: 100%;
+    border-radius: 5%;
+    width: 222px;
+    height: 49px;
 }
 
 button:hover {
@@ -37,6 +45,9 @@ button:hover {
     cursor: pointer;
     width: 100%;
     background-color: #fa1100;
+    border-radius: 5%;
+    width: 222px;
+    height: 49px;
 }
 
 /* Center the image and position the close button */
@@ -62,25 +73,35 @@ span.psw {
 
 /* The Modal (background) */
 .modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
     left: 0;
     top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
     padding-top: 60px;
 }
 
 /* Modal Content/Box */
 .modal-content {
     background-color: #fefefe;
-    margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+    margin: 5% auto 15% auto;
+    /* 5% from the top, 15% from the bottom and centered */
     border: 1px solid #888;
-    width: 50%; /* Could be more or less, depending on screen size */
+    width: 50%;
+    /* Could be more or less, depending on screen size */
 }
 
 .wrapper {
@@ -88,12 +109,13 @@ span.psw {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-  }
-  .wrapper .form {
+}
+
+.wrapper .form {
     width: 100%;
     padding: 0 6rem;
-  }
-  
+}
+
 
 /* The Close Button (x) */
 .close {
@@ -118,23 +140,33 @@ span.psw {
 }
 
 @-webkit-keyframes animatezoom {
-    from {-webkit-transform: scale(0)} 
-    to {-webkit-transform: scale(1)}
+    from {
+        -webkit-transform: scale(0)
+    }
+
+    to {
+        -webkit-transform: scale(1)
+    }
 }
-    
+
 @keyframes animatezoom {
-    from {transform: scale(0)} 
-    to {transform: scale(1)}
+    from {
+        transform: scale(0)
+    }
+
+    to {
+        transform: scale(1)
+    }
 }
 
 /* Change styles for span and cancel button on extra small screens */
 @media screen and (max-width: 300px) {
     span.psw {
-       display: block;
-       float: none;
+        display: block;
+        float: none;
     }
+
     .cancelbtn {
-       width: 100%;
+        width: 100%;
     }
 }
-

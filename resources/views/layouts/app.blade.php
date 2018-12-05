@@ -4,6 +4,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns"
+    crossorigin="anonymous">
+<script src="{{asset('bower_components/jquery/dist/jquery.js')}}"></script>
+<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/innks/NanumSquareRound/master/nanumsquareround.min.css">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -21,6 +26,10 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <!-- resources/views/layouts/app.blade.php -->
     <style>
+.btn-primary {
+  width: 222px;
+  height: 49px;
+}
   .chat {
     list-style: none;
     margin: 0;
@@ -119,6 +128,7 @@
             @yield('content')
         </main>
     </div>
+
 </body>
 
 </html>

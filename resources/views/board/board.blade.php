@@ -63,7 +63,12 @@
                         {{ $row['created_at']->diffForHumans()}}
                         <br>
                         <br>
-                        Hits : {{ $row->hits }}
+                        Hits : 
+                        @if($row->hits)
+                        {{$row->hits}}
+                        @else
+                        {{0}}
+                        @endif
                     </span>
                 </a>
             </li>

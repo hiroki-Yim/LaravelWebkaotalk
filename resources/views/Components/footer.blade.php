@@ -12,9 +12,9 @@
         <i class="fas fa-clipboard-list"></i>
         <span class="tab-bar__title">board</span>
     </a>
-    <a href="{{url('find')}}" class="tab-bar__tab" id="tab-bar__find">
+    <a href="{{url('Friend')}}" class="tab-bar__tab" id="tab-bar__find">
         <i class="fa fa-search"></i>
-        <span class="tab-bar__title">Find</span>
+        <span class="tab-bar__title">Friends</span>
     </a>
     <a href="{{url('more')}}" class="tab-bar__tab" id="tab-bar__more">
         <i class="fa fa-ellipsis-h"></i>

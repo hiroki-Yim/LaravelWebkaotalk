@@ -1,5 +1,6 @@
 @extends('layouts.app') 
-@section('content')
+
+@section('login2')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -43,6 +44,7 @@
                                 <button type="submit" class="btn btn-primary">
                                     {{ __('Login') }}
                                 </button>
+                                <a id="kakao-login-btn"></a>
                                 <a class="btn btn-link" href="{{ route('password.request') }}">
                                     {{ __('Forgot Your Password?') }}
                                 </a>
@@ -53,5 +55,21 @@
             </div>
         </div>
     </div>
+
 </div>
+<script>
+  Kakao.init('2c95436371fe2b214c00944d71b32514');
+    // 카카오 로그인 버튼을 생성합니다.
+    Kakao.Auth.createLoginButton({
+        container: '#kakao-login-btn',
+        success: function (authObj) {
+            location.href = "{{url('auth/loginForKakao')}}";
+            //alert(JSON.stringify(authObj));
+        },
+        fail: function (err) {
+            alert(JSON.stringify(err));
+        }
+    });
+
+</script>
 @endsection

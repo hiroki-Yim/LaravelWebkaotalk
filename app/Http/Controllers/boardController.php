@@ -21,25 +21,23 @@ class boardController extends Controller
     public function index(){
          //비지니스 로직 이후 view로 호출
          
-        $board = Board::select('users.email', 'users.nickname', 'users.profileImg',
-	    'boards.postid', 'boards.author', 'boards.title', 'boards.content', 'boards.created_at')->orderBy('boards.created_at', 'desc')->join('users','boards.author','=','users.nickname')->paginate(7);
+        // $board = Board::select('users.email', 'users.nickname', 'users.profileImg',
+	    // 'boards.postid', 'boards.author', 'boards.title', 'boards.content', 'boards.created_at')->orderBy('boards.created_at', 'desc')->join('users','boards.author','=','users.nickname')->paginate(7);
         
         $viewCount = Hit::select('postid', DB::raw('count(*) hits'))->groupBy('postid')->orderBy('postid', 'desc');
-        
-        // $board = Board::select('users.email', 'users.nickname', 'users.profileImg',
-        // 'boards.postid', 'boards.author', 'boards.title', 'boards.content', 'boards.created_at','hits')->join('users','boards.author','=','users.nickname')
-        // ->joinsub($viewCount, 'hits', function($join){
-        // $join->on('boards.postid', '=', 'hits.postid');
-        // })->paginate(7);
-        //-> 문제점 조회된 게시글만 찾아서 갖고옴, 조회 안된 게시글들도 가져올 수 있어야 함
-        
-        $hits =  Board::select('hits')->join('users','boards.author','=','users.nickname')
-        ->joinsub($viewCount, 'hits', function($join){
+
+        $board = Board::select('users.email', 'users.nickname', 'users.profileImg',
+        'boards.postid', 'boards.author', 'boards.title', 'boards.content', 'boards.created_at','hits')->join('users','boards.author','=','users.nickname')
+        // ->join('hits', 'boards.postid' , '=', 'hits.postid', 'right outer')->paginate(7);
+        ->leftjoinsub($viewCount, 'hits', function($join){  // leftjoinsub로 조회되지 않은 게시글까지 불러옴
         $join->on('boards.postid', '=', 'hits.postid');
-        })->get();
+        })->orderBy('created_at','desc')->paginate(7);
+
+        // -> 문제점 조회된 게시글만 찾아서 갖고옴, 조회 안된 게시글들도 가져올 수 있어야 함 outer Join
 
         //return response()->json($hits, 200, [], JSON_PRETTY_PRINT);
         return view('board.board', ['msgs' => $board]); // 이건 배열 형태로 쭉 받으면 됨, 연관배열,
+        //view('board.board', ['msgs' => $board]); // 이건 배열 형태로 쭉 받으면 됨, 연관배열,
         
         // $hits = hit::select('pro_id', DB::raw('count(*) hits'))->groupBy('pro_id')->orderBy('hits', 'desc');
 

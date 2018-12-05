@@ -14,8 +14,8 @@ $(document).ready(function () {
         case temp + "/":
             path = "index";
             break;
-        case temp + "find":
-            path = "find";
+        case temp + "friends":
+            path = "friends";
             break;
         case temp + "more":
             path = "more";

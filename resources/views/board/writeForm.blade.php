@@ -57,8 +57,8 @@
           </span> @endif
         </div>
 
-        <div class="dropzone" id="fileDropzone">
-        </div>
+        <!-- <div class="dropzone" id="fileDropzone">
+        </div> -->
 
         <div class="form-group">
           <textarea class="summernote" id="summernote" name="content" rows="8">
@@ -135,10 +135,10 @@ function uploadImageContent(image, editor) {
         success: function (url) {
             var image = $('<img>').attr('src', url);
             $(editor).summernote("insertNode", image[0]);
+            console.log(url);
         },
-        error: function (data) {
-            console.log(data);
-            alert('error');
+        error: function (err) {
+            alert(err.responseText);
         }
     });
 }

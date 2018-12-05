@@ -70,10 +70,7 @@
 
 
             <input type="hidden" name="postid" value="{{$msg['postid']}}">
-            {{-- <form action="{{route('board.destroy'),$msg['postid']}}" method="post">
-                @csrf
-                <input type="button" class="delete" value="삭제하기">
-            </form> --}}
+            
             <!-- <i class="fas fa-trash-alt"></i> -->
         </span>
     </div>
