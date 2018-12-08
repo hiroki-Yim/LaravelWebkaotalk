@@ -31,10 +31,15 @@ class User extends Authenticatable implements MustVerifyEmail
 
     protected $cast = ['activated'=>'boolean']; //tinyint열이 string 타입으로 반환되는 경우를 방지함 열의 타입을 지정
 
-    public function user(){
+    public function messages(){
         return $this->hasMany(Message::class);
         //$this->belongsTo('nickname', 'writer');
     }
+
+    public function boards(){
+        return $this->hasMany(Board::class);
+    }
+
 
     public function friendsOfMine(){
         return $this->belongsToMany('App\User', 'friends', 'user_id', 'friend_id');

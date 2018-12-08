@@ -18,20 +18,20 @@ Route::get('/', 'mainController@main');  // root : app->Http->Controller->mainCo
 
 Auth::routes(); // Auth관련 기능 연결
 
-Route::resource('board', 'boardController');
+Route::resource('board', 'boardController')->middleware('auth');
 Route::post('/postajax', 'AjaxController@search');  // ajax test
 
 //
-Route::get('loginAuth', function(){
-    return view('auth.login2');
-});
+Route::get('loginAuth', function(){return view('auth.login2');});
 
 Route::get('find', 'boardController@find');
 Route::get('more', function(){return view('more.more');});
 
 Route::get('maps', function(){return view('more.maps');});
-Route::get('profile', 'viewController@profile');
-Route::get('profileEdit', 'viewController@editProfile');
+
+//profile
+Route::get('profile', 'viewController@profile')->middleware('auth');
+Route::get('profileEdit', 'viewController@editProfile')->middleware('auth');
 
 //kakao login
 Route::get('loginForKakao', 'kakaoLoginController@index');
@@ -39,12 +39,12 @@ Route::get('auth/loginForKakao', 'kakaoLoginController@redirectToProvider');
 Route::get('/auth/kakaologincallback', 'kakaoLoginController@handleProviderCallback');
 
 
-Route::resource('chats', 'chatsController');//->middleware('verified') activated 기준으로 못주나? 궁금
+Route::resource('chats', 'chatsController')->middleware('auth');
 
 //puhser chat
 Route::get('chatting', 'chatsController@chatting');
 Route::get('messages', 'chatsController@fetchMessages');//모든 채팅 메시지 가져오는 로직
-Route::post('messages', 'chatsController@sendMessage'); //새 메시지 보내기
+#send Message is error -> route/api
 
 //send register mail
 Route::get('register/{code}', 'Auth\RegisterController@confirm')->name('register.confirm');
@@ -52,6 +52,7 @@ Route::get('register/{code}', 'Auth\RegisterController@confirm')->name('register
 //File&Img_upload
 Route::post('/imgUpload','fileController@imageUpload')->name('imgUpload');
 Route::post('/fileUpload', 'fileController@fileUpload')->name('fileUpload');
+Route::delete('/deleteFile/{id}', 'fileController@deleteFile');
 
 //친구관리
 Route::get('/friends', 'FriendController@index')->middleware('auth');

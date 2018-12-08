@@ -15,7 +15,7 @@ class boardController extends Controller
 {
     public function __construct(){
         //return $this->middleware('guest'); //guest이외의 사람에게는 이 컨트롤러를 사용하지 못하게 만든다는 뜻
-        //return $this->middleware('auth');//인증된 사용자만 이용할 수 있게 board 볼수있게 만듦 board들어가면 url(login)이 실행됨
+        return $this->middleware('auth');//인증된 사용자만 이용할 수 있게 board 볼수있게 만듦 board들어가면 url(login)이 실행됨
     }
 
     public function index(){
@@ -59,21 +59,17 @@ class boardController extends Controller
         $msg = Board::where('postid', $board)->first();  // 레코드 1나만 들고옴 first
         $comments = Comment::orderBy('postnum', 'desc');
         $viewCount = Hit::where('postid', $board)->count();//조회수 
+        
         return view('board.views', ['msg' => $msg, 'comments'=>$comments, 'viewCount'=>$viewCount]);
         }else{
-        echo 
-        "<script>
-        alert('로그인 한 사용자만 글을 볼 수 있습니다.');
-        history.back();
-        </script>";  
-        
-        //return redirect('board')->with('message', "로그인을 해 주세요!　( ´∀｀ )");
+        return redirect('/')->with('message', "로그인을 해 주세요!　( ´∀｀ )");
     }
 }
     public function create(){   //create
         // 작성 폼으로 연결
+        $board = new Board();
         if(\Auth::check()){
-            return view('board.writeForm');
+            return view('board.writeForm', compact('board'));
         }else{
             echo "<script>
             alert('로그인 한 사용자만 글을 쓸 수 있습니다.');
@@ -89,12 +85,11 @@ class boardController extends Controller
         $content = $request->content;
         $author = $request->author;
 
-        Board::create([
+        $board = Board::create([
             'title' => $title,
             'content' => $content,
             'author' => $author,
         ]);
-
         return redirect('board')->with('message', $title.'의 글이 저장되었습니다.');
     }
 

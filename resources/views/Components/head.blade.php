@@ -6,4 +6,4 @@
 <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 <link rel="stylesheet" href="{{asset('css/login_form.css')}}">
 <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/innks/NanumSquareRound/master/nanumsquareround.min.css">
-<link rel="stylesheet" href="{{asset('css/kakaoview/style.css')}}">
+<link rel="stylesheet" href="{{asset('css/kakaoview/style.css')}}?after">

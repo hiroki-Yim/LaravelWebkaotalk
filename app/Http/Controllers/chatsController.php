@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Message;
+use App\User;
 use Illuminate\Http\Request;
 use App\Events\MessageSent;
 use Illuminate\Support\Facades\Auth;
@@ -22,7 +23,10 @@ class chatsController extends Controller
 
     public function index()
     {
-        return view('chat.chats');
+        $new = Message::max('created_at');  //제일 마지막에 생성된 메세지
+        $chat = Message::where('created_at', $new)->first();//
+        
+        return view('chat.chats')->with('chat',$chat);
     }
 
     public function chatting(){
@@ -34,15 +38,19 @@ class chatsController extends Controller
     }
 
     public function sendMessage(Request $request){
-        $user = \Auth::user();
+        $user = User::find($request->user["id"]);
 
         $message = $user->messages()->create([
-          'message' => $request->input('message')
-        ]);
-      
+          'user_id' => $user->id,
+          'message' => $request->message
+        ])->with('user')
+          ->where('user_id', $user->id)
+          ->get()
+          ->pop();
+    
         broadcast(new MessageSent($user, $message))->toOthers();
       
-        return ['status' => 'Message Sent!'];
+        return response($message, 200);
     }
 
     /**

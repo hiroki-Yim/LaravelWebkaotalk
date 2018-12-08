@@ -15,11 +15,12 @@ class CreateFilesTable extends Migration
     {
         Schema::create('files', function (Blueprint $table) {
             $table->increments('id')->comment('파일 고유 번호');
-            $table->unsignedInteger('postnum')->comment('게시글 번호');
-            $table->foreign('postnum')->references('postid')->on('boards')->onDelete('cascade');
+            $table->unsignedInteger('postid')->nullable()->index()->comment('업로드된 게시글 번호');
+            $table->foreign('postid')->references('postid')->on('boards')->onDelete('cascade');
             $table->string('filename')->comment('파일 고유 이름');
-            $table->string('filesavename')->comment('파일 해시 이름');
-            $table->string('fileurl')->comment('저장된 위치');
+            $table->string('filetype')->comment('파일 타입');
+            $table->unsignedInteger('filesize')->nullable()->comment('파일 크기');
+            
             $table->timestamps();
         });
     }

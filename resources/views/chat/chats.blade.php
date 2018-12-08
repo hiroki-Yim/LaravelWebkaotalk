@@ -37,12 +37,12 @@
             <div class="chat__content">
               <img src="{{asset('img/person-icon.png')}}">
               <div class="chat__preview">
-                <h3 class="chat__user">Lynn</h3>
-                <span class="chat__last-message">Hello! This is a test message!</span>
+                <h3 class="chat__user">OpenChatting</h3>
+                <span class="chat__last-message">{{$chat->message}}</span>
               </div>
             </div>
             <span class="chat__date-time">
-              15:55
+              {{$chat->created_at}}
             </span>
           </a>
         </li>

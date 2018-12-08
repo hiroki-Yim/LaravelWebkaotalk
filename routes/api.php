@@ -13,6 +13,10 @@ use Illuminate\Http\Request;
 |
 */
 
+//puhser chat
+
+Route::post('messages', 'chatsController@sendMessage'); //새 메시지 보내기
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });

@@ -12,7 +12,12 @@ use App\Board;
 
 class fileController extends Controller
 {
-    public function imageUpload(Request $request){
+
+    public function __construct() {
+        $this->middleware('auth');
+    }
+
+    public function imageUpload(Request $request){ //sympony method 
         $url = "";
         $image = $request->image;
         if ($request->hasFile('image')) {
@@ -23,7 +28,7 @@ class fileController extends Controller
                 $url ="/uploadedFile/Images/users/".$savename;
                 return $url;
             }else{
-                return response('에러가 발생하였습니다.', 406)->header('Content-Type', 'text/plain');
+                return response('에러가 발생하였습니다.', 406)->header('Content-Type', 'text/plain');   //발생에러 직접 정의 가능
             }
         }else {
             return response('파일이 없습니다.', 406)->header('Content-Type', 'text/plain');
@@ -46,7 +51,41 @@ class fileController extends Controller
         // return $request->file('image')->path();
     }    
 
-    public function fileUpload(){
+    public function fileUpload(Request $request){
+        // setlocale(LC_ALL,'ko_KR.UTF-8');
+        $attachment = null;
+    	\Log::error('error1');
+    	if($request->hasFile('file')) {
+    		$file = $request->file('file');
+            $user = \Auth::user();
+            $filename = $user->email."_".date("y-h.i.s")."_".$file->getClientOriginalName();   //지정된 필터로 필터함
+            //return $filename;
+    		$filesize = $file->getSize();
+            
+            
+            $path = public_path().'/uploadedFile/Files/users/'.$user->email;
+
+            // if (!File::isDirectory($path)) {
+            //     File::makeDirectory($path, 0777, true, true);
+            // }
+            \Log::error('error2');
+    		$file->move($path, $filename);
+          
+    		$fileInfo = [
+    				'filename'=>$filename,
+    				'filetype'=>$file->getClientMimeType(),
+    				'filesize'=> $filesize,
+    			];
+    			
+			$Files = File::create($fileInfo);
+    	}
+    	\Log::error('error3');
+    	return response()->json($attachment, 200);
+       
+
+    }
+
+    public function uploadFile(Request $request){
         $file = Input::file('file');
         $fileArray = array('image' => $file);
         $rules = array(
@@ -58,23 +97,29 @@ class fileController extends Controller
         $error = 'Invalid file type / size';
         return $error;
         }else{
-        $uploads_dir = public_path().'/uploadedFile/Images/users/';
+        $uploads_dir = public_path().'/uploadedFile/Files/users/';
         $extension = Input::file('file')->getClientOriginalExtension();
         $tmp_name = $_FILES["file"]["tmp_name"];
-        $name = $filename = date('Ymdhis').'_'.$_FILES["file"]["name"].'.' . $extension;
-        move_uploaded_file($tmp_name, "$uploads_dir/$name");
+        $filename = date('Ymdhis').'_'.$_FILES["file"]["name"].'.' . $extension;
+        move_uploaded_file($tmp_name, "$upload s_dir/$name");
         return $uploads_dir;
         //"/uploadedFile/Images/users/".$name;
         }
-
     }
 
-    public function uploadFile(){
-
-    }
-
-    public function deleteFile(){
-
+    public function deleteFile(Request $request, $id){
+        $filename = $request->filename;
+        $attachment = File::find($id);
+        $attachment->deleteUploadedFile($filename);
+        $attachment->delete();
+        $user = \Auth::user();
+        /*
+        $path = public_path('files') . DIRECTORY_SEPARATOR .  $user->id . DIRECTORY_SEPARATOR . $filename;
+        if (file_exists($path)) {
+            unlink($path);
+        }
+        */
+        return $filename;  
     }
     public function modifyFile(){
 
