@@ -25,9 +25,10 @@ function onSearch(e) {
                 throw new Error("ajax 통신 실패");
             },
             success: function (data) {
+                console.log(data);
                 const dataList = JSON.parse(data[2].data);
-                console.log(dataList);
-                console.log(data[3].count);
+                // console.log(dataList);
+                // console.log(data[3].count);
                 makeTag(dataList);
                 $('#postedNum').html('<p>검색된 게시글 갯수: ' + data[3].count + '건</p>');
             }
@@ -50,7 +51,7 @@ function makeTag(data) {
         if (items[i]) {
             tag +=
                 "<li class='chats__chat'>" +
-                "<a href={{url('board')}}" + "/" + items[i].postid + ">" +
+                "<a href=board/" + items[i].postid + ">" +
                 "<div class='chat__content'>" +
                 "<img src=" + "'" + items[i].profileImg + "'" + ">" +
                 "<div class='chat__preview'>" +

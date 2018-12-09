@@ -24,6 +24,9 @@ function uploadImageContent(image, editor) {
     data.append("image", image);
     $.ajax({
         data: data,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
         type: "POST",
         url: "/imgUpload",
         cache: false,
@@ -36,7 +39,7 @@ function uploadImageContent(image, editor) {
             console.log(url);
         },
         error: function (err) {
-            alert(err.responseText);
+            alert(err.responseText); //서버에서 받아온 responseText출력
         }
     });
 }

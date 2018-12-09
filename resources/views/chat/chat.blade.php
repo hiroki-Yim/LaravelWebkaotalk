@@ -1,15 +1,12 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <?php require_once('./html/head.php'); ?>
   <title>Chat</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="body-chat">
   <header class="top-header chat-header">
-    <?php require_once('./html/header_top.php'); ?>
+    <?php //require_once('./html/header_top.php'); ?>
     <div class="header__bottom">
       <div class="header__column">
         <a href="chats.php">

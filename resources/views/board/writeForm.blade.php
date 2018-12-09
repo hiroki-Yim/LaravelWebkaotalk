@@ -10,13 +10,14 @@
 <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
 <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>
 
+<link rel="stylesheet" href="{{asset('css/kakaoview/style.css')}}">
+
+<script src="{{asset('bower_components/summernote/dist/summernote.js')}}"></script>
+<link rel="stylesheet" href="{{asset('bower_components/summernote/dist/summernote2.css')}}">
+
 <script src="{{asset('bower_components/dropzone/dist/dropzone.js')}}"></script>
 <link rel="stylesheet" href="{{asset('bower_components/dropzone/dist/dropzone.css')}}">
 
-<script src="{{asset('bower_components/summernote/dist/summernote.js')}}"></script>
-<link rel="stylesheet" href="{{asset('bower_components/summernote/dist/summernote.css')}}?after">
-
-<link rel="stylesheet" href="{{asset('css/kakaoview/style.css')}}">
 <meta name="csrf-token" content="{{ csrf_token() }}" />
 @endsection
  
@@ -57,7 +58,7 @@
             <strong>{{ $errors->first('title') }}</strong>
           </span> @endif
         </div>
-        <div id="my-dropzone" class="dropzone"></div>
+        <!-- <div id="my-dropzone" class="dropzone"></div> -->
         <div class="form-group">
           <textarea class="summernote" id="summernote" name="content" rows="8">
             {{old('content')}}
@@ -69,111 +70,64 @@
             </span> @endif
       </form>
 
-      {{--
-      <form action="{{route('/fileUpload')}}" class="dropzone" id="dropzone" method="post" enctype="multipart/form-data">
+      
+      <form action="{{route('fileUpload')}}" class="dropzone" id="dropzone" method="post" enctype="multipart/form-data">
         @csrf
-      </form> --}}
+      </form>
 
       <button type="button" class="btn" id="startUpload" style="float:right;" onclick="$('#store').submit()">작성하기</button>
       <a type="button" class="btn btn-success" href="{{url('board')}}" style="float:right;">목록보기</a>
     </fieldset>
   </div>
+  
   <script>
-    Dropzone.autoDiscover = false;
-      var data = new FormData();
-      //Dropzone class
-      var myDropzone = new Dropzone(".dropzone", {
-        url: "/fileUpload",
-        paramName: "file",
-        maxFilesize: 200,
-        maxFiles: 10,
-        acceptedFiles: "image/*,application/pdf,*,txt/*,text/*,jpg,png",
-        dictInvalidFileType: 'image, apllication, text upload only',
-        autoProcessQueue: true,      //올리자 말자 서버로 전송하지 않겠다 = false
-        addRemoveLinks: true,         //remove링크 추가
-        dictRemoveFile: "취소하기",    //remove링크에 쓰일 글
-        params: {
-          _token: $('meta[name="csrf-token"]').attr('content'),
-          post_id: '{{ $board->id }}'
-                },
-      });
-      $('#startUpload').click(function () {
-        myDropzone.processQueue();
-      });
-
-  // Dropzone.autoDiscover = false;
-  // Dropzone.options.dropzone = {
-  //     addRemoveLinks: true,
-  //     dictRemoveFile: "취소하기",
-  //     paramName: "file",
-  //     headers: {
-  //     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-  //     },
-  //     removedfile: function(file) {
-  //     console.log(file);
-  //     var name = file.upload.filename;
-  //     var fileid = file.upload.id;
-  //     $.ajax({
-  //         headers: {
-  //                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-  //                 },
-  //         type: 'DELETE',
-  //         url: '/deleteFile/'+fileid,
-  //         data: {filename: name},
-  //         success: function (data){
-  //             //console.log("File has been successfully removed!!");
-  //             alert(data + 'has been successfully removed!!');
-  //         },
-  //         error: function(e) {
-  //             //console.log(e);
-  //             alert(e);
-  //         }});
-  //         var fileRef;
-  //         return (fileRef = file.previewElement) != null ? 
-  //         fileRef.parentNode.removeChild(file.previewElement) : void 0;
-  //     },
-  //     success: function(file, response) {
-  //       console.log(file);
-  //       console.log(response);
-  //       console.log([
-  //         file.name,
-  //         file.size,
-  //       ]);
-  //         file.upload.id = response.id;
-  //         $("<input>", {type:'hidden', name:'attachments[]', value:response.id}).appendTo($('#store'));
-  //     },  
-  //     error: function(file, response){
-  //        return false;
-  //     }
-  // }
+  Dropzone.options.dropzone = {
+      addRemoveLinks: true,
+      dictRemoveFile: "취소하기",
+      paramName: "file",
+      headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      },
+      removedfile: function(file) {
+      console.log(file);
+      var name = file.upload.filename;
+      var fileid = file.upload.id;
+      $.ajax({
+          headers: {
+                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                  },
+          type: 'DELETE',
+          url: '/deleteFile/'+fileid,
+          data: {filename: name},
+          success: function (data){
+              alert(data + '해당 파일을 지웠습니다.');
+          },
+          error: function(e) {
+              //console.log(e);
+              alert(e.responseText);
+          }});
+          var fileRef;
+          return (fileRef = file.previewElement) != null ? 
+          fileRef.parentNode.removeChild(file.previewElement) : void 0;
+      },
+      success: function(file, response) {
+        console.log(file);
+        console.log(response);  //controller에서 response 메서드로 보낸 데이터가 들어있음
+        // console.log([
+        //   file.name,
+        //   file.size,
+        // ]);
+          file.upload.id = response.id;
+          $("<input>", {type:'hidden', name:'attachments[]', value:response.id}).appendTo($('#store'));
+      },  
+      error: function(file, response){
+         return false;
+      }
+  }
   </script>
 
+  <script src="{{asset('js/summernote_opt.js')}}"></script>
 
-  <script src="{{asset('js/summernote_opt.js')}}">
-    // removedfile: function(file) {
-      //         console.log(file);
-      //         var name = file.upload.filename;
-      //         var fileid = file.upload.id;  //file id
-      //         $.ajax({
-      //             headers: {
-      //                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-      //                     },
-      //             type: 'DELETE',
-      //             url: '/deleteFile/'+fileid,
-      //             data: {filename: name},
-      //             success: function (data){
-      //                 //console.log("File has been successfully removed!!");
-      //                 alert(data + 'has been successfully removed!!');
-      //             },
-      //             error: function(e) {
-      //                 //console.log(e);
-      //                 alert(e);
-      //             }});
-      //             var fileRef;
-      //             return (fileRef = file.previewElement) != null ? 
-      //             fileRef.parentNode.removeChild(file.previewElement) : void 0;
-      // },
-  </script>
   <!-- summernote 옵션 정의 -->
 </main>
 @endsection

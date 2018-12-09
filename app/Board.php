@@ -21,6 +21,10 @@ class Board extends Model
     }
     
     public function files() {  
-    	return $this->hasMany(File::class);
+    	return $this->hasMany(File::class);   //1개의 보드는 여러 파일을 가질 수 있음
+    }
+
+    public function comments(){
+        return $this->hasMany('App\Comment', 'writer');
     }
 }

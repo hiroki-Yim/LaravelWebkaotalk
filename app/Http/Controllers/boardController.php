@@ -7,6 +7,7 @@ use App\Board;  //정의한 Model(db)들 사용
 use App\User;
 use App\Comment;
 use App\hit;
+use App\File;
 use Illuminate\Support\Facades\DB;
 use Log; // Log사용
 use App\Http\Requests\updateBoardRequest; //검증된 정보(빈값x)를 받기위해 정의해놓았고 그 class를 객체로 사용하기 위해 use 해줌.
@@ -28,11 +29,12 @@ class boardController extends Controller
 
         $board = Board::select('users.email', 'users.nickname', 'users.profileImg',
         'boards.postid', 'boards.author', 'boards.title', 'boards.content', 'boards.created_at','hits')->join('users','boards.author','=','users.nickname')
-        // ->join('hits', 'boards.postid' , '=', 'hits.postid', 'right outer')->paginate(7);
         ->leftjoinsub($viewCount, 'hits', function($join){  // leftjoinsub로 조회되지 않은 게시글까지 불러옴
         $join->on('boards.postid', '=', 'hits.postid');
         })->orderBy('created_at','desc')->paginate(7);
 
+        
+        // ->join('hits', 'boards.postid' , '=', 'hits.postid', 'right outer')->paginate(7);
         // -> 문제점 조회된 게시글만 찾아서 갖고옴, 조회 안된 게시글들도 가져올 수 있어야 함 outer Join
 
         //return response()->json($hits, 200, [], JSON_PRETTY_PRINT);
@@ -50,17 +52,26 @@ class boardController extends Controller
         //*** Log::11가지 현업에서는 LOG를 남기는것이 중요하다~
     }
     public function show($board){
+
         //$this->hits($id);
         if(\Auth::check()){
         if(!Hit::where('postid',$board)->where('userid',\Auth::user()['email'])->exists()){
             
             Hit::create(['postid' => $board, 'userid' => \Auth::user()['email']]);
         }
+
         $msg = Board::where('postid', $board)->first();  // 레코드 1나만 들고옴 first
-        $comments = Comment::orderBy('postnum', 'desc');
+        $comments = Comment::where('postnum', $board)->get();
         $viewCount = Hit::where('postid', $board)->count();//조회수 
+        // return $comments;
         
-        return view('board.views', ['msg' => $msg, 'comments'=>$comments, 'viewCount'=>$viewCount]);
+        // $cprofile = User::where('writer', $comments->writer[0])->first();
+        // return $cprofile;
+        $profile = User::where('nickname', $msg['author'])->first();
+        
+        $files = File::where('postid', $board)->get();
+        // return $files;
+        return view('board.views', ['msg' => $msg, 'comments'=>$comments, 'viewCount'=>$viewCount, 'profile'=>$profile, 'files'=>$files]);
         }else{
         return redirect('/')->with('message', "로그인을 해 주세요!　( ´∀｀ )");
     }
@@ -79,17 +90,27 @@ class boardController extends Controller
         
     }
 
-    public function store(updateBoardRequest $request){
+    public function store(Request $request){
         //폼에 입력된 것을 db에 삽입
-        $title = $request->title;
-        $content = $request->content;
-        $author = $request->author;
+        $title = $request->get('title');
+        $content = $request->get('content');
+        // $author = $request->author;
 
-        $board = Board::create([
-            'title' => $title,
-            'content' => $content,
-            'author' => $author,
-        ]);
+        $board = new Board();
+        $board->title = $title;
+        $board->author = \Auth::user()->nickname;
+        $board->content = $content;
+        $board->save();
+
+        \Log::debug(['attachments'=>$request->attachments]);
+
+        if($request->has('attachments')){
+            foreach($request->attachments as $file){
+                $attach = File::find($file);
+                $attach->board()->associate($board);    //belongsTo 관계를 변경 할 때 associate 메소드를 사용할 수 있음, 이 메소드는 자식 모델에 외래 키를 지정함
+                $attach->save();
+            }
+        }
         return redirect('board')->with('message', $title.'의 글이 저장되었습니다.');
     }
 

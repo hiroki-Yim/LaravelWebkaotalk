@@ -18,10 +18,19 @@ Route::get('/', 'mainController@main');  // root : app->Http->Controller->mainCo
 
 Auth::routes(); // Auth관련 기능 연결
 
+//
 Route::resource('board', 'boardController')->middleware('auth');
 Route::post('/postajax', 'AjaxController@search');  // ajax test
 
-//
+//comment Routing
+Route::resource('comment', 'commentController',[   
+    'only'=>[ 'destroy', 'update']    //해당함수만 라우팅함
+]);
+Route::resource('board.comment', 'commentController',[
+    'only'=> ['store']
+]);
+
+//auth middleware route
 Route::get('loginAuth', function(){return view('auth.login2');});
 
 Route::get('find', 'boardController@find');
@@ -47,13 +56,13 @@ Route::get('messages', 'chatsController@fetchMessages');//모든 채팅 메시�
 #send Message is error -> route/api
 
 //send register mail
-Route::get('register/{code}', 'Auth\RegisterController@confirm')->name('register.confirm');
+Route::get('register/{code}', 'Auth\RegisterController@confirm')->name('register.confirm')->where('code','[\pL-\pN]{60}');
 
 //File&Img_upload
 Route::post('/imgUpload','fileController@imageUpload')->name('imgUpload');
 Route::post('/fileUpload', 'fileController@fileUpload')->name('fileUpload');
 Route::delete('/deleteFile/{id}', 'fileController@deleteFile');
+Route::get('/downloadFile/{file}', 'fileController@downloadFile');
 
 //친구관리
 Route::get('/friends', 'FriendController@index')->middleware('auth');
-

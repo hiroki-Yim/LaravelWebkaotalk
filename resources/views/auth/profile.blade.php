@@ -11,7 +11,7 @@
 <header class="top-header top-header--transparent">
   <div class="header__bottom">
     <div class="header__column">
-      <a href="index.php">
+      <a href="{{url('/')}}">
           <i class="fa fa-times fa-lg"></i>
         </a>
     </div>

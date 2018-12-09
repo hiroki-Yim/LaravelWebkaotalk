@@ -8,11 +8,11 @@ use App\Board;
 class File extends Model
 {
         protected $fillable = [
-            'filename', 'filesize', 'filetype',
+            'filename', 'filesize', 'filetype', 'savename'
         ];
         
         public function board() {
-            return $this->belongsTo(Board::class);  
+            return $this->belongsTo('App\Board', 'postid'); //defualt값 board_id, -> postid 
         }
 
         public function getUrlAttribute() {

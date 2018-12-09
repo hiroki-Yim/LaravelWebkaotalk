@@ -58,10 +58,10 @@ class fileController extends Controller
     	if($request->hasFile('file')) {
     		$file = $request->file('file');
             $user = \Auth::user();
-            $filename = $user->email."_".date("y-h.i.s")."_".$file->getClientOriginalName();   //지정된 필터로 필터함
+            $filename = $user->email."_".date("y-h.i.s")."_".$file->getClientOriginalName();
             //return $filename;
     		$filesize = $file->getSize();
-            
+            $savename = $file->getClientOriginalName();
             
             $path = public_path().'/uploadedFile/Files/users/'.$user->email;
 
@@ -74,37 +74,15 @@ class fileController extends Controller
     		$fileInfo = [
     				'filename'=>$filename,
     				'filetype'=>$file->getClientMimeType(),
-    				'filesize'=> $filesize,
+                    'filesize'=>$filesize,
+                    'savename'=>$savename,
     			];
     			
-			$Files = File::create($fileInfo);
+			$attachment = File::create($fileInfo);  //file을 비동기방식으로 업로드 한 뒤 
     	}
     	\Log::error('error3');
-    	return response()->json($attachment, 200);
+    	return response()->json($attachment, 200);  //업로드 된 파일의 정보를 front에 전달
        
-
-    }
-
-    public function uploadFile(Request $request){
-        $file = Input::file('file');
-        $fileArray = array('image' => $file);
-        $rules = array(
-        'image' => 'mimes:jpeg,jpg,png,gif|required|max:10000' // max 10000kb
-        );
-        $validator = Validator::make($fileArray, $rules);
-        //
-        if ($validator->fails()){
-        $error = 'Invalid file type / size';
-        return $error;
-        }else{
-        $uploads_dir = public_path().'/uploadedFile/Files/users/';
-        $extension = Input::file('file')->getClientOriginalExtension();
-        $tmp_name = $_FILES["file"]["tmp_name"];
-        $filename = date('Ymdhis').'_'.$_FILES["file"]["name"].'.' . $extension;
-        move_uploaded_file($tmp_name, "$upload s_dir/$name");
-        return $uploads_dir;
-        //"/uploadedFile/Images/users/".$name;
-        }
     }
 
     public function deleteFile(Request $request, $id){
@@ -120,6 +98,22 @@ class fileController extends Controller
         }
         */
         return $filename;  
+    }
+
+    public function downloadFile(File $file){
+        // return $file;
+        $path = attachments_path($file->filename);
+        // return $path;
+        $savename = $file->savename;
+        // return $savename;
+
+        if(!\File::exists($path)){
+            "asdf";
+        };
+
+        $filetype = $file->filetype;
+
+        return response()->download($path, $savename);
     }
     public function modifyFile(){
 

@@ -56,7 +56,8 @@ Friends!
             <h6 class="friends__section-title">My Profile</h6>
         </header>
         <div class="friends__section-rows">
-            <div class="friends__section-row">
+            <div class="friends__section-row with-tagline">
+                <div class="friends__section-column">
                 @if(Auth::check() && Auth::user()['profileImg'])
                 <img src="{{Auth::user()['profileImg']}}" alt="">
                 <a href="profile" class="fiends__section-name">
@@ -71,11 +72,12 @@ Friends!
                             guest
                             @endif
                         </a>
+                        
+                </div>
+                <span class="friends__section-tagline">
+                    텀프로젝트 웹카오톡
+                </span>
             </div>
-            {{-- <div class="friends__section-row">
-                <img src="images/person-icon.png" alt="">
-                <span class="fiends__section-name">공기친구</span>
-            </div> --}}
         </div>
     </section>
     <section class="friends__section">

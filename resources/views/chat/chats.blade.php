@@ -27,7 +27,7 @@
   </header>
   <main class="chats">
     <div class="search-bar">
-      <i class="fa fa-search"></i>
+      <!-- <i class="fa fa-search"></i> -->
       <input type="text" placeholder="Find friends, chats, Plus Friends">
     </div>
     <ul class="chats__list">
@@ -35,7 +35,7 @@
         <li class="chats__chat">
         <a href="{{url('chatting')}}">
             <div class="chat__content">
-              <img src="{{asset('img/person-icon.png')}}">
+              <img src="{{asset('img/kabare.jpg')}}">
               <div class="chat__preview">
                 <h3 class="chat__user">OpenChatting</h3>
                 <span class="chat__last-message">{{$chat->message}}</span>
@@ -46,24 +46,11 @@
             </span>
           </a>
         </li>
-        <li class="chats__chat">
-          <a href="{{url('chatting')}}">
-            <div class="chat__content">
-              <img src="{{asset('img/person-icon.png')}}">
-              <div class="chat__preview">
-                <h3 class="chat__user">KakaoTalk</h3>
-                <span class="chat__last-message">You logged into KakaoTalk PC</span>
-              </div>
-            </div>
-            <span class="chat__date-time">
-              Jul 29
-            </span>
-          </a>
-        </li>
+  
     </ul>
-    <div class="chat-btn">
+    <!-- <div class="chat-btn">
       <i class="fa fa-comment"></i>
-    </div>
+    </div> -->
   </main>
   @endsection {{-- end ChatsContents --}}
 

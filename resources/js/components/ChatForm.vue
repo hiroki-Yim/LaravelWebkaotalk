@@ -5,7 +5,7 @@
       type="text"
       name="message"
       class="form-control input-sm"
-      placeholder="Type your message here..."
+      placeholder="메세지를 입력해 주세요"
       v-model="newMessage"
       @keyup.enter="sendMessage"
     >

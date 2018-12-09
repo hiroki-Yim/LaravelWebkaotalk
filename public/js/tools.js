@@ -44,7 +44,7 @@ function locationView(url, param, opt, opt2) {
 function delReq() { // 삭제할 경우 삭제를 확인을 받기 위해 deleteRequest함수를 만듦
     var yn = confirm("정말 삭제 하시겠습니까?");
     if (yn == true) {
-        return true;
+        document.getElementById("deleteform").submit();
     } // 아니오를 눌렀을 시 아무 반응 하지않게 함
     else {
         return false;
