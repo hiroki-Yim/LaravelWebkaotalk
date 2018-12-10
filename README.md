@@ -20,9 +20,12 @@ _Laravel で開発した初めてのプロジェクト_
 
 ### 使った言語
 
--   サーバー　 LARAVEL
--   フロントエンド　 HTML,CSS,JAVASCRIPT,VUE
+-   サーバー PHP
+-   フロントエンド HTML,CSS,JAVASCRIPT,VUE
+-   FrameWork : Laravel
 
-#### サイト住所
+### サイト住所
 
 http://www.hiroki.space
+
+### ScreenShot
