@@ -21,7 +21,7 @@ _Laravel で開発した初めてのプロジェクト_
 ### 使った言語
 
 -   バックエンド PHP
--   フロントエンド HTML,CSS,JAVASCRIPT,VUE
+-   フロントエンド HTML, CSS, JAVASCRIPT, VUE
 -   フレイムワーク Laravel
 
 ### サイト住所
