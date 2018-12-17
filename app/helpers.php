@@ -15,9 +15,9 @@
       return $posting_time;
         }
 
-      function attachments_path($path = '')
+      function attachments_path($path = '', $usersPath)
       {
-          return public_path('uploadedFile\Files\users\\'. \Auth::user()->email . ($path ? DIRECTORY_SEPARATOR . $path : $path));
+          return public_path('uploadedFile\Files\users\\'.$usersPath.($path ? DIRECTORY_SEPARATOR . $path : $path));
       }
       
       function format_filesize($bytes)

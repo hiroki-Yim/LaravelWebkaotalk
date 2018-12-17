@@ -62,6 +62,8 @@ class LoginController extends Controller
         $credentials = $request->only('email', 'password');
         if(Auth::attempt($credentials)) {
             return redirect('/');
+        }else{
+            return redirect('/')->with('message', '존재하지 않는 아이디 이거나 비밀번호를 확인 해 주세요!');
         }
     }
 }

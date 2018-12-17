@@ -7,3 +7,4 @@
 <link rel="stylesheet" href="{{asset('css/login_form.css')}}">
 <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/innks/NanumSquareRound/master/nanumsquareround.min.css">
 <link rel="stylesheet" href="{{asset('css/kakaoview/style.css')}}?after">
+<script src="{{asset('js/timeago.js')}}"></script>

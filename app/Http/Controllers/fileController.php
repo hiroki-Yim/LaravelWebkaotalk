@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
 use App\File;
 use App\Board;
-
+use App\User;
 
 class fileController extends Controller
 {
@@ -58,7 +58,7 @@ class fileController extends Controller
     	if($request->hasFile('file')) {
     		$file = $request->file('file');
             $user = \Auth::user();
-            $filename = $user->email."_".date("y-h.i.s")."_".$file->getClientOriginalName();
+            $filename = $user->nickname."_".date("y-h.i.s")."_".$file->getClientOriginalName();
             //return $filename;
     		$filesize = $file->getSize();
             $savename = $file->getClientOriginalName();
@@ -101,14 +101,16 @@ class fileController extends Controller
     }
 
     public function downloadFile(File $file){
+        $userPath = User::select('email')->where('nickname',Board::select('author')->where('postid',$file->postid)->first('author')->author)->first('email')->email;
+        //  return $userPath;
         // return $file;
-        $path = attachments_path($file->filename);
-        // return $path;
+        $path = attachments_path($file->filename, $userPath); //helpers function
+        //  return $path; //Log::error('fileController downloadFile attachments_path');
         $savename = $file->savename;
         // return $savename;
 
         if(!\File::exists($path)){
-            "asdf";
+            abort(404);
         };
 
         $filetype = $file->filetype;

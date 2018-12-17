@@ -6,6 +6,7 @@
           <strong class="primary-font">{{ message.user.nickname }}</strong>
         </div>
         <p>{{ message.message }}</p>
+        <p style="flex:left;">{{ message.created_at}}</p>
       </div>
     </li>
   </ul>

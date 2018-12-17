@@ -58,9 +58,10 @@
         <span class="chat__message-body">
             {!!$msg["content"] !!}
             
+            @if($files && count($files))
             <br>
-            @if($files)
-            <strong> 첨부된 파일 리스트</strong>
+            <br>
+            <strong> 첨부된 파일 리스트 : </strong>
             @foreach($files as $file)
             <ul>
             <li><a href="{{url('downloadFile', $file)}}">{{$file->savename}}</a></li>
@@ -74,13 +75,15 @@
 
             <div style="text-align:left">
             <a type="button" class="btn btn-success" value="수정하기" onclick="location.href='{{$msg['postid']}}/edit'"><i class="fas fa-edit"></i></a>
+            </div>
+            
 
             <form action="{{route('board.destroy', ['board' => $msg['postid']]) }}" method="POST" id="deleteform">
                 @csrf
                 @method('delete')
                <a class ="button" onclick='deleter(); return false;'> <i class="fas fa-trash-alt fa-input"></i></a>
             </form>
-            </div>
+            
                 <script>
                     function deleter(){
                         var yn = confirm("정말 삭제 하시겠습니까?");
@@ -101,18 +104,23 @@
     <!-- 현재 접속자와 글쓴이와 다르면 하얀박스 -->
     <div class="chat__message chat__message--to-me">
         @if($profile['profileImg'])
-        <img src="{{$profile['profileImg']}}" class="chat__message-avatar"> @else
-        <img src="{{asset('img/person-icon.png')}}" class="chat__message-avatar"> @endif
+        <img src="{{$profile['profileImg']}}" class="chat__message-avatar"> 
+        @else
+        <img src="{{asset('img/person-icon.png')}}" class="chat__message-avatar"> 
+        @endif
 
         <div class="chat__message-center">
             <h3 class="chat__message-username"> {{$msg['author']}}</h3>
             <span class="chat__message-body">
                 {!!$msg["content"] !!}
+
+                @if($files && count($files))
                 <br>
-                @if($files)
-                <strong> 첨부된 파일 리스트</strong>
+                <br>
+                <strong>첨부된 파일 리스트 :</strong>
                 @foreach($files as $file)
                 <ul>
+                <!-- {{$file}} -->
                 <li><a href="{{url('downloadFile', $file)}}">{{$file->savename}}</a></li>
                 <li>파일 크기 : {{format_filesize($file->filesize)}}</li>
                 </ul>
@@ -178,197 +186,6 @@
     <script>
     </script>
 @endsection
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 @section('nav-bottom')
     @include('Components.nav-bottom')

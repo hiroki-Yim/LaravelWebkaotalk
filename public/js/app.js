@@ -57203,6 +57203,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["messages"]
@@ -57228,7 +57229,9 @@ var render = function() {
             ])
           ]),
           _vm._v(" "),
-          _c("p", [_vm._v(_vm._s(message.message))])
+          _c("p", [_vm._v(_vm._s(message.message))]),
+          _vm._v(" "),
+          _c("p", [_vm._v(_vm._s(message.created_at))])
         ])
       ])
     })
@@ -57361,7 +57364,7 @@ var render = function() {
         id: "btn-input",
         type: "text",
         name: "message",
-        placeholder: "Type your message here..."
+        placeholder: "메세지를 입력해 주세요"
       },
       domProps: { value: _vm.newMessage },
       on: {

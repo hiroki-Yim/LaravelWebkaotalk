@@ -1,3 +1,7 @@
+jQuery(document).ready(function () {
+    jQuery("time.timeago").timeago();
+});
+
 $.ajaxSetup({
     headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -27,6 +31,7 @@ function onSearch(e) {
             success: function (data) {
                 console.log(data);
                 const dataList = JSON.parse(data[2].data);
+                console.log(dataList);
                 // console.log(dataList);
                 // console.log(data[3].count);
                 makeTag(dataList);
@@ -59,21 +64,30 @@ function makeTag(data) {
                 "<span class='chat__last-message'>" + items[i].author + "</span>" +
                 "</div>" +
                 "</div>" +
-                "<span class='chat__date-time'>" +
-                moment(items[i].created_at).calendar(); +
-            "<br>" +
-            "<br>" +
-            'Hits : ' + //items[i].Hits +
-            "</span>" +
-            "</a>" +
-            "</li>";
-
+                "<span class='chat__date-time' data-date=" + new Date().toISOString(items[i].created_at) + ">" +
+                "<br>" +
+                "<br>" +
+                'Hits : ' + //items[i].Hits +
+                "</span>" +
+                "</a>" +
+                "</li>";
         }
     }
-    if (items.length == 0) {
-        tag += '<p id = "resultNone"> 결과가 없습니다. </p>';
+    if (items.length === 0) {
+        tag = '<p id = "resultNone"> 결과가 없습니다. </p>';
     }
     $('.chats__list').children('.infinite-scroll').html(tag);
 
     isLoading = false;
+}
+
+$(function () {
+    setInterval(timeagoNoti, 1000 * 30);
+});
+
+function timeagoNoti() {
+    $(".chat__date-time").each(function () {
+        var timeago_t = jQuery.timeago($(this).data("date"));
+        $(this).text(timeago_t);
+    })
 }
