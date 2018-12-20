@@ -53,7 +53,7 @@ class ResetPasswordController extends Controller
         // If the password was successfully reset, we will redirect the user back to
         // the application's home authenticated view. If there is an error we can
         // redirect them back to where they came from with their error message.
-        return $response == Password::PASSWORD_RESET
+        return $response == \Password::PASSWORD_RESET
             ? $this->sendResetResponse($response)
             : $this->sendResetFailedResponse($request, $response);
     }
@@ -106,7 +106,7 @@ class ResetPasswordController extends Controller
     {
         $user->forceFill([
             'password' => bcrypt($password),
-            'remember_token' => Str::random(60),
+            'remember_token' => str_random(60),
         ])->save();
 
         $this->guard()->login($user);
@@ -142,7 +142,7 @@ class ResetPasswordController extends Controller
      */
     public function broker()
     {
-        return Password::broker();
+        return \Password::broker();
     }
 
     /**
@@ -152,6 +152,6 @@ class ResetPasswordController extends Controller
      */
     protected function guard()
     {
-        return Auth::guard();
+        return \Auth::guard();
     }
 }

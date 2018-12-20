@@ -42,9 +42,9 @@ class notifyMessage extends Command
     {
         Log::info('scheduler time check : '.now());
         // $board = new Board();
-        // $board->title = str_random();
+        // $board->title = str_random(10);
         // $board->author = \Auth::user()->nickname;
-        // $board->content = $content;
+        // $board->content = str_random(50);
         // $board->save();
 
     }
