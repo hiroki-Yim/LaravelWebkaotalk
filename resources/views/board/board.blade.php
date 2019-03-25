@@ -1,9 +1,9 @@
-@extends('layouts.master') 
+@extends('layouts.master')
 @section('title') board
 @endsection
- 
+
 @section('head')
-    @include('components.head')
+@include('components.head')
 <link rel="stylesheet" href="{{asset('css/write_modify.css')}}">
 <link rel="stylesheet" href="{{asset('bower_components/bootstrap-material-design/css/mdb.min.css')}}">
 <script src="{{asset('bower_components/jscroll/dist/jquery.jscroll.min.js')}}"></script>
@@ -11,15 +11,15 @@
 <script src="{{asset('js/moment.js')}}"></script>
 <meta name="csrf-token" content="{{ csrf_token() }}" />
 @endsection
- 
+
 @section('header-top')
-    @include('components.header-top')
+@include('components.header-top')
 @endsection
- 
+
 @section('login')
-    @include('auth.login')
+@include('auth.login')
 @endsection
- 
+
 @section('boardContent')
 <div class="header__bottom">
     <div class="header__column">
@@ -63,7 +63,7 @@
                         {{ $row['created_at']->diffForHumans()}}
                         <br>
                         <br>
-                        Hits : 
+                        Hits :
                         @if($row->hits)
                         {{$row->hits}}
                         @else
@@ -79,29 +79,29 @@
         <i class="fa fa-comment"></i>
     </div>
     <script>
-        $('.chat-btn').click(function () {
+        $('.chat-btn').click(function() {
             location.href = "{{route('board.create')}}";
         });
     </script>
     <script src="{{asset('js/find.js')}}"></script><!-- Title 검색기능 스크립트 -->
     <script>
         $('ul.pagination').hide();
-                $(function () {
-                    $('.infinite-scroll').jscroll({
-                        autoTrigger: true,
-                        loadingHtml: '<img class="center-block" src="{{asset("img/loading.gif")}}" alt="Loading... " />', // MAKE SURE THAT YOU PUT THE CORRECT IMG PATH
-                        padding: 0,
-                        nextSelector: '.pagination li.active + li a',
-                        contentSelector: 'div.infinite-scroll',
-                        callback: function () {
-                            $('ul.pagination').remove();
-                        }
-                    });
-                });
+        $(function() {
+            $('.infinite-scroll').jscroll({
+                autoTrigger: true,
+                loadingHtml: '<img class="center-block" src="{{asset("img/loading.gif")}}" alt="Loading... " />', // MAKE SURE THAT YOU PUT THE CORRECT IMG PATH
+                padding: 0,
+                nextSelector: '.pagination li.active + li a',
+                contentSelector: 'div.infinite-scroll',
+                callback: function() {
+                    $('ul.pagination').remove();
+                }
+            });
+        });
     </script><!-- 무한페이지네이션 구현 -->
 </main>
 @endsection
- 
+
 @section('nav-bottom')
-    @include('Components.nav-bottom')
-@endsection
+@include('Components.nav-bottom')
+@endsection 

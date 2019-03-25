@@ -58,21 +58,21 @@ Friends!
         <div class="friends__section-rows">
             <div class="friends__section-row with-tagline">
                 <div class="friends__section-column">
-                @if(Auth::check() && Auth::user()['profileImg'])
-                <img src="{{Auth::user()['profileImg']}}" alt="">
-                <a href="profile" class="fiends__section-name">
-                    {{ Auth::user()['nickname'] }}
-                    @elseif(Auth::check() && !Auth::user()['profileImg'])
-                    <img src="{{asset('img/person-icon.png')}}" alt="">
+                    @if(Auth::check() && Auth::user()['profileImg'])
+                    <img src="{{Auth::user()['profileImg']}}" alt="">
                     <a href="profile" class="fiends__section-name">
                         {{ Auth::user()['nickname'] }}
-                        @else
+                        @elseif(Auth::check() && !Auth::user()['profileImg'])
                         <img src="{{asset('img/person-icon.png')}}" alt="">
                         <a href="profile" class="fiends__section-name">
-                            guest
-                            @endif
-                        </a>
-                        
+                            {{ Auth::user()['nickname'] }}
+                            @else
+                            <img src="{{asset('img/person-icon.png')}}" alt="">
+                            <a href="profile" class="fiends__section-name">
+                                guest
+                                @endif
+                            </a>
+
                 </div>
                 <span class="friends__section-tagline">
                     텀프로젝트 웹카오톡
@@ -101,4 +101,4 @@ Friends!
 
 @section('nav-bottom')
 @include('Components.nav-bottom')
-@endsection
+@endsection 

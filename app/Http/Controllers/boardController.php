@@ -14,83 +14,95 @@ use App\Http\Requests\updateBoardRequest; //검증된 정보(빈값x)를 받기�
 
 class boardController extends Controller
 {
-    public function __construct(){
+    public function __construct()
+    {
         //return $this->middleware('guest'); //guest이외의 사람에게는 이 컨트롤러를 사용하지 못하게 만든다는 뜻
-        return $this->middleware('auth');//인증된 사용자만 이용할 수 있게 board 볼수있게 만듦 board들어가면 url(login)이 실행됨
+        return $this->middleware('auth'); //인증된 사용자만 이용할 수 있게 board 볼수있게 만듦 board들어가면 url(login)이 실행됨
     }
 
-    public function index(){
-         //비지니스 로직 이후 view로 호출
-         
+    public function index()
+    {
+        //비지니스 로직 이후 view로 호출
+
         // $board = Board::select('users.email', 'users.nickname', 'users.profileImg',
-	    // 'boards.postid', 'boards.author', 'boards.title', 'boards.content', 'boards.created_at')->orderBy('boards.created_at', 'desc')->join('users','boards.author','=','users.nickname')->paginate(7);
-        
+        // 'boards.postid', 'boards.author', 'boards.title', 'boards.content', 'boards.created_at')->orderBy('boards.created_at', 'desc')->join('users','boards.author','=','users.nickname')->paginate(7);
+
         $viewCount = Hit::select('postid', DB::raw('count(*) hits'))->groupBy('postid')->orderBy('postid', 'desc');
 
-        $board = Board::select('users.email', 'users.nickname', 'users.profileImg',
-        'boards.postid', 'boards.author', 'boards.title', 'boards.content', 'boards.created_at','hits')->join('users','boards.author','=','users.nickname')
-        ->leftjoinsub($viewCount, 'hits', function($join){  // leftjoinsub로 조회되지 않은 게시글까지 불러옴
-        $join->on('boards.postid', '=', 'hits.postid');
-        })->orderBy('created_at','desc')->paginate(7);
+        $board = Board::select(
+            'users.email',
+            'users.nickname',
+            'users.profileImg',
+            'boards.postid',
+            'boards.author',
+            'boards.title',
+            'boards.content',
+            'boards.created_at',
+            'hits'
+        )->join('users', 'boards.author', '=', 'users.nickname')
+            ->leftjoinsub($viewCount, 'hits', function ($join) {  // leftjoinsub로 조회되지 않은 게시글까지 불러옴
+                $join->on('boards.postid', '=', 'hits.postid');
+            })->orderBy('created_at', 'desc')->paginate(7);
 
-        
+
         // ->join('hits', 'boards.postid' , '=', 'hits.postid', 'right outer')->paginate(7);
         // -> 문제점 조회된 게시글만 찾아서 갖고옴, 조회 안된 게시글들도 가져올 수 있어야 함 outer Join
 
         //return response()->json($hits, 200, [], JSON_PRETTY_PRINT);
         return view('board.board', ['msgs' => $board]); // 이건 배열 형태로 쭉 받으면 됨, 연관배열,
-        //view('board.board', ['msgs' => $board]); // 이건 배열 형태로 쭉 받으면 됨, 연관배열,
-        
+
         // $hits = hit::select('pro_id', DB::raw('count(*) hits'))->groupBy('pro_id')->orderBy('hits', 'desc');
 
         // $products = product::joinSub($hits, 'hits', function ($join){
         //     $join->on('id', '=', 'hits.pro_id');
         // })->paginate(9);
-        
+
         //$board->toJson();
         // $totlaCount = Board::count();
         //*** Log::11가지 현업에서는 LOG를 남기는것이 중요하다~
     }
-    public function show($board){
+    public function show($board)
+    {
 
         //$this->hits($id);
-        if(\Auth::check()){
-        if(!Hit::where('postid',$board)->where('userid',\Auth::user()['email'])->exists()){
-            
-            Hit::create(['postid' => $board, 'userid' => \Auth::user()['email']]);
-        }
+        if (\Auth::check()) {
+            if (!Hit::where('postid', $board)->where('userid', \Auth::user()['email'])->exists()) {
 
-        $msg = Board::where('postid', $board)->first();  // 레코드 1나만 들고옴 first
-        $comments = Comment::where('postnum', $board)->get();
-        $viewCount = Hit::where('postid', $board)->count();//조회수 
-        // return $comments;
-        
-        // $cprofile = User::where('writer', $comments->writer[0])->first();
-        // return $cprofile;
-        $profile = User::where('nickname', $msg['author'])->first();
-        
-        $files = File::where('postid', $board)->get();
-        // return $files;
-        return view('board.views', ['msg' => $msg, 'comments'=>$comments, 'viewCount'=>$viewCount, 'profile'=>$profile, 'files'=>$files]);
-        }else{
-        return redirect('/')->with('message', "로그인을 해 주세요!　( ´∀｀ )");
+                Hit::create(['postid' => $board, 'userid' => \Auth::user()['email']]);
+            }
+
+            $msg = Board::where('postid', $board)->first();  // 레코드 1나만 들고옴 first
+            $comments = Comment::where('postnum', $board)->get();
+            $viewCount = Hit::where('postid', $board)->count(); //조회수 
+            // return $comments;
+
+            // $cprofile = User::where('writer', $comments->writer[0])->first();
+            // return $cprofile;
+            $profile = User::where('nickname', $msg['author'])->first();
+
+            $files = File::where('postid', $board)->get();
+            // return $files;
+            return view('board.views', ['msg' => $msg, 'comments' => $comments, 'viewCount' => $viewCount, 'profile' => $profile, 'files' => $files]);
+        } else {
+            return redirect('/')->with('message', "로그인을 해 주세요!　( ´∀｀ )");
+        }
     }
-}
-    public function create(){   //create
+    public function create()
+    {   //create
         // 작성 폼으로 연결
         $board = new Board();
-        if(\Auth::check()){
+        if (\Auth::check()) {
             return view('board.writeForm', compact('board'));
-        }else{
+        } else {
             echo "<script>
             alert('로그인 한 사용자만 글을 쓸 수 있습니다.');
             history.back();
             </script>";
         }
-        
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         //폼에 입력된 것을 db에 삽입
         $title = $request->get('title');
         $content = $request->get('content');
@@ -102,25 +114,26 @@ class boardController extends Controller
         $board->content = $content;
         $board->save();
 
-        \Log::debug(['attachments'=>$request->attachments]);
+        \Log::debug(['attachments' => $request->attachments]);
 
-        if($request->has('attachments')){
-            foreach($request->attachments as $file){
+        if ($request->has('attachments')) {
+            foreach ($request->attachments as $file) {
                 $attach = File::find($file);
                 $attach->board()->associate($board);    //belongsTo 관계를 변경 할 때 associate 메소드를 사용할 수 있음, 이 메소드는 자식 모델에 외래 키를 지정함
                 $attach->save();
             }
         }
-        return redirect('board')->with('message', $title.'의 글이 저장되었습니다.');
+        return redirect('board')->with('message', $title . '의 글이 저장되었습니다.');
     }
 
-    public function edit(Request $request, $board){
-        
+    public function edit(Request $request, $board)
+    {
+
         $msg = Board::where('postid', $board)->first();
         $author = $msg['author'];
-        if(\Auth::user()['nickname'] == $author){
-        return view('board.modifyForm',['msg' => $msg]);
-        }else{
+        if (\Auth::user()['nickname'] == $author) {
+            return view('board.modifyForm', ['msg' => $msg]);
+        } else {
             echo "<script>
             alert('본인의 글만 수정할 수 있습니다.');
             history.back();
@@ -129,31 +142,33 @@ class boardController extends Controller
         // return redirect();  // 수정이 완료되면 alert창과 함께 수정했던 글로 다시 돌아간다.
         // return view('modify')->with('postid', $postid)->with('page', $page)->with('row', $row);
     }
-        
-    public function update(updateBoardRequest $request, $board){  // make:request updateBoardRequest에 의해 생성된 class를 사용 
-                                                          //넘어온 값은 검증된 값으로 넘어오게 된다.
+
+    public function update(updateBoardRequest $request, $board)
+    {  // make:request updateBoardRequest에 의해 생성된 class를 사용 
+        //넘어온 값은 검증된 값으로 넘어오게 된다.
         //갱신 작업 수행
-         $title = $request->title;
-         $content = $request->content;
-         $author = $request->author;
-         
-         Board::where('postid', $board)->update([
+        $title = $request->title;
+        $content = $request->content;
+        $author = $request->author;
+
+        Board::where('postid', $board)->update([
             'title' => $title,
             'content' => $content,
             'author' => $author,
         ]);
 
-         return redirect('board/'.$board);
+        return redirect('board/' . $board);
     }
-    public function destroy($board){   //delete                        //board에는 모든 것이 들어갈 수 있고 $board로 받아와야함
-        
+    public function destroy($board)
+    {   //delete                        //board에는 모든 것이 들어갈 수 있고 $board로 받아와야함
+
         Board::where('postid', $board)->delete();
 
         return redirect('board');
     }
 
-    public function find(){
+    public function find()
+    {
         return view('board.find');
     }
-
 }

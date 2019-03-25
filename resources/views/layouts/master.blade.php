@@ -9,21 +9,21 @@
     @yield('head')
 </head>
 
-<body>    
+<body>
 
     @yield('header-top')
     @if(Session::has('message'))
     <div class="alert alert-info" style="text-align: center;">{{ Session::get('message') }}</div>
     @endif
-    
+
     @yield('auth')
-    
+
     @yield('mainContent') {{-- bodyContent --}}
     @yield('chatsContent')
     @yield('boardContent')
     @yield('findContent')
     @yield('moreContent')
-    
+
     @yield('viewContent')
 
     @yield('writeForm')
@@ -35,4 +35,4 @@
     @yield('nav-bottom')
 </body>
 
-</html>
+</html> 

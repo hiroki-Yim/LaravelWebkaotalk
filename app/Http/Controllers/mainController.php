@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 
 class mainController extends Controller
 {
-    public function main(){
+    public function main()
+    {
         return view('index');
     }
 }
-
