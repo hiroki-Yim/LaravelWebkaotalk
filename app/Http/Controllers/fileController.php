@@ -93,7 +93,6 @@ class fileController extends Controller
         $attachment = File::find($id);
         $attachment->deleteUploadedFile($filename);
         $attachment->delete();
-        $user = \Auth::user();
         /*
         $path = public_path('files') . DIRECTORY_SEPARATOR .  $user->id . DIRECTORY_SEPARATOR . $filename;
         if (file_exists($path)) {
@@ -106,10 +105,10 @@ class fileController extends Controller
     public function downloadFile(File $file)
     {
         $userPath = User::select('email')->where('nickname', Board::select('author')->where('postid', $file->postid)->first('author')->author)->first('email')->email;
-        //  return $userPath;
+        // return $userPath;
         // return $file;
         $path = attachments_path($file->filename, $userPath); //helpers function
-        //  return $path; //Log::error('fileController downloadFile attachments_path');
+        // return $path; //Log::error('fileController downloadFile attachments_path');
         $savename = $file->savename;
         // return $savename;
 
